@@ -136,3 +136,5 @@ test_pact_changed_webhook:
 
 .env:
 	touch .env
+
+.PHONY: start stop test

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 
-const oas = fs.readFileSync(path.join(__dirname, "../oas/products.yml"));
+const oas = fs.readFileSync(path.join(__dirname, "../oas/swagger.yml"));
 const report = fs.readFileSync(path.join(__dirname, "../output/report.md"));
 const success = process.argv[2]
 
