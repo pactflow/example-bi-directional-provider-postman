@@ -1,4 +1,4 @@
-PACTICIPANT := "example-provider-postman"
+PACTICIPANT := "pactflow-example-provider-postman"
 GITHUB_REPO := "pactflow/example-provider-postman"
 PACT_CHANGED_WEBHOOK_UUID := "c76b601e-d66a-4eb1-88a4-6ebc50c0df8b"
 PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:latest"
@@ -34,11 +34,11 @@ tag_as_dev:
 
 publish_contract: .env tag_as_dev
 	@echo "\n========== STAGE: publish contract + results (success) ==========\n"
-	npm run test:publish -- true
+	PACTICIPANT=${PACTICIPANT} npm run test:publish -- true
 
 publish_failure: .env tag_as_dev
 	@echo "\n========== STAGE: publish contract + results (failure) ==========\n"
-	npm run test:publish -- false
+	PACTICIPANT=${PACTICIPANT} npm run test:publish -- false
 
 # Run the ci target from a developer machine with the environment variables
 # set as if it was on Github Actions.
@@ -68,6 +68,7 @@ run-and-test: start test stop
 
 test: .env
 	@echo "\n========== STAGE: test ✅ ==========\n"
+	npm run test:convert
 	npm run test
 
 start: server.PID

@@ -68,6 +68,41 @@ paths:
                     price: 99.99
                     type: CREDIT_CARD
                     version: v1
+        "404":
+          description: "GET /products/:id (404)"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: "79"
+            Date:
+              schema:
+                type: string
+                example: "Tue, 04 May 2021 10:22:58 GMT"
+            ETag:
+              schema:
+                type: string
+                example: "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                "GET /products/:id (404)":
+                  value: {}
     parameters:
       - name: id
         in: path

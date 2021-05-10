@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "newman run -e ./test/localhost3000.postman_environment.json test/PactflowProductsAPI.postman_collection.json",
-    "test:convert": "p2o ./test/PactflowProductsAPI.postman_collection.json -f ./oas/swagger.yml",
-    "test:convert2": "node test/transform.js",
+    "test:convert": "node test/transform.js",
     "test:publish": "node test/publish.js"
   },
   "dependencies": {
@@ -19,8 +18,7 @@
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
-    "postman2openapi": "^1.0.0-beta",
-    "postman-to-openapi": "^1.8.0"
+    "postman2openapi": "^1.0.0-beta"
   },
   "license": "ISC"
 }

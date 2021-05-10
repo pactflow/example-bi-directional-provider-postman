@@ -15,6 +15,7 @@ build/
 
 # misc
 .DS_Store
+*.PID
 .env
 .env.local
 .env.development.local

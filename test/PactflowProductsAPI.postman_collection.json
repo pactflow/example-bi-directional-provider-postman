@@ -195,6 +195,58 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"id\": \"09\",\n    \"type\": \"CREDIT_CARD\",\n    \"name\": \"Gem Visa\",\n    \"version\": \"v1\",\n    \"price\": 99.99\n}"
+				},
+				{
+					"name": "GET /products/:id (404)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/product/999",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"product",
+								"999"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "79"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 May 2021 10:22:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
 				}
 			]
 		},
