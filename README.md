@@ -1,4 +1,4 @@
-# Example Provider
+# Example Postman Provider
 
 [![Build Status](https://travis-ci.com/pactflow/example-provider-postman.svg?branch=master)](https://travis-ci.com/pactflow/example-provider-postman)
 
