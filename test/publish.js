@@ -3,18 +3,20 @@ const path = require("path");
 const axios = require("axios");
 
 const oas = fs.readFileSync(path.join(__dirname, "../oas/swagger.yml"));
-const report = fs.readFileSync(path.join(__dirname, "../output/report.md"));
-const success = process.argv[2]
+const report = fs.readFileSync(
+  path.join(__dirname, "PactflowProductsAPI.postman_collection.json")
+);
+const success = process.argv[2];
 
 const result = {
   content: Buffer.from(oas, "utf-8").toString("base64"),
   contractType: "oas",
   contentType: "application/yaml",
   verificationResults: {
-    success: (success === "true"),
+    success: success === "true",
     content: Buffer.from(report, "utf-8").toString("base64"),
-    contentType: "text/plain",
-    verifier: "verifier",
+    contentType: "application/json",
+    verifier: "postman",
   },
 };
 
@@ -25,7 +27,7 @@ axios({
   method: "PUT",
   headers: {
     Authorization: `Bearer ${process.env.PACT_BROKER_TOKEN}`,
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
   url:
     process.env.PACT_BROKER_BASE_URL +

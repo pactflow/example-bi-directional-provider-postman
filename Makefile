@@ -132,6 +132,8 @@ test_pact_changed_webhook:
 ## Misc
 ## ======================
 
+convert:
+	npm run test:convert
 .env:
 	touch .env
 
