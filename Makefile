@@ -83,24 +83,21 @@ stop: server.PID
 ## Deploy tasks
 ## =====================
 
-deploy: deploy_app tag_as_prod
+deploy: deploy_app record_deployment
 
 no_deploy:
 	@echo "Not deploying as not on master branch"
 
 can_i_deploy: .env
 	@echo "\n========== STAGE: can-i-deploy? 🌉 ==========\n"
-	@"${PACT_CLI}" broker can-i-deploy --pacticipant ${PACTICIPANT} --version ${TRAVIS_COMMIT} --to prod
+	@"${PACT_CLI}" broker can-i-deploy --pacticipant ${PACTICIPANT} --version ${TRAVIS_COMMIT} --to-environment production
 
 deploy_app:
 	@echo "\n========== STAGE: deploy 🚀 ==========\n"
 	@echo "Deploying to prod"
 
-tag_as_prod:
-	@"${PACT_CLI}" broker create-version-tag \
-	  --pacticipant ${PACTICIPANT} \
-	  --version ${TRAVIS_COMMIT} \
-	  --tag prod
+record_deployment: .env
+	@"${PACT_CLI}" broker record_deployment --pacticipant ${PACTICIPANT} --version ${TRAVIS_COMMIT} --environment production
 
 ## =====================
 ## Pactflow set up tasks
