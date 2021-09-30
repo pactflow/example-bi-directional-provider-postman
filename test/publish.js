@@ -3,9 +3,12 @@ const path = require("path");
 const axios = require("axios");
 
 const oas = fs.readFileSync(path.join(__dirname, "../oas/swagger.yml"));
-const report = fs.readFileSync(
-  path.join(__dirname, "PactflowProductsAPI.postman_collection.json")
-);
+
+const reportDirPath = path.join(__dirname, "../newman")
+const reportFileName = fs.readdirSync(reportDirPath).filter(fn => fn.endsWith('.json'))[0];
+const reportPath = path.join(__dirname, `../newman/${reportFileName}`)
+const report = fs.readFileSync(reportPath);
+
 const success = process.argv[2];
 
 const result = {
