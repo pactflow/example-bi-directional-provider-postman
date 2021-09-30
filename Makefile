@@ -69,7 +69,6 @@ run-and-test: start test stop
 test: .env
 	@echo "\n========== STAGE: test ✅ ==========\n"
 	npm run test:convert
-	npm run pre:test
 	npm run test
 
 start: server.PID
