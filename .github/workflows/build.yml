@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
+  PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
+  PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
+  GIT_COMMIT: ${{ github.sha }}
+  GITHUB_REF: ${{ github.ref }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+      - name: Install
+        run: npm i
+      - name: Test
+        run: GIT_BRANCH=${GITHUB_REF:11} make ci
+
+  # Only deploy from master
+  deploy:
+    runs-on: ubuntu-latest
+    needs: ci
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker pull pactfoundation/pact-cli:latest
+      - name: Deploy
+        run: GIT_BRANCH=${GITHUB_REF:11} make deploy
+        if: github.ref == 'refs/heads/master'
