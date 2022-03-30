@@ -2,6 +2,10 @@
 
 [![Build Status](https://github.com/pactflow/example-provider-postman/actions/workflows/build.yml/badge.svg)](https://github.com/pactflow/example-provider-postman/actions)
 
+[![Can I deploy Status](https://testdemo.pactflow.io/pacticipants/pactflow-example-provider-postman/branches/master/latest-version/can-i-deploy/to-environment/production/badge)](https://testdemo.pactflow.io/pacticipants/pactflow-example-provider-postman/branches/master/latest-version/can-i-deploy/to-environment/production/badge)
+
+[![pactflow-example-provider-postman/pactflow-example-consumer](https://testdemo.pactflow.io/pacts/provider/pactflow-example-provider-postman/consumer/pactflow-example-consumer/latest/master/badge.svg)](https://testdemo.pactflow.io/pacts/provider/pactflow-example-provider-postman/consumer/pactflow-example-consumer/latest/master)
+
 This is an example "Product" API Provider, to demonstrate the new bi-directional contract capability of Pactflow (previously referred to as Provider driven contracts, or collaborative contracts). It:
 
 - Is an API written in Express JS
