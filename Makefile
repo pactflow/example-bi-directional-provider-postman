@@ -25,18 +25,18 @@ ci:
 
 publish_and_deploy: publish_contract can_i_deploy $(DEPLOY_TARGET)
 
-tag_as_dev:
+tag:
 	@"${PACT_CLI}" broker create-version-tag \
 	  --pacticipant ${PACTICIPANT} \
 	  --version ${GIT_COMMIT} \
 		--auto-create-version \
-	  --tag master
+	  --tag ${GIT_BRANCH}
 
-publish_contract: .env tag_as_dev
+publish_contract: .env tag
 	@echo "\n========== STAGE: publish contract + results (success) ==========\n"
 	PACTICIPANT=${PACTICIPANT} npm run test:publish -- true
 
-publish_failure: .env tag_as_dev
+publish_failure: .env tag
 	@echo "\n========== STAGE: publish contract + results (failure) ==========\n"
 	PACTICIPANT=${PACTICIPANT} npm run test:publish -- false
 
