@@ -1,6 +1,6 @@
 # Example Postman Provider
 
-[![Build Status](https://travis-ci.com/pactflow/example-provider-postman.svg?branch=master)](https://travis-ci.com/pactflow/example-provider-postman)
+[![Build Status](https://github.com/pactflow/example-provider-postman/actions/workflows/build.yml/badge.svg)](https://github.com/pactflow/example-provider-postman/actions)
 
 This is an example "Product" API Provider, to demonstrate the new bi-directional contract capability of Pactflow (previously referred to as Provider driven contracts, or collaborative contracts). It:
 
