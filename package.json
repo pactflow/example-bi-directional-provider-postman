@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "pretest": "rimraf newman",
-    "test": "newman run -e ./test/localhost3000.postman_environment.json test/PactflowProductsAPI.postman_collection.json -r cli,json",
+    "test": "newman run -e ./test/localhost3001.postman_environment.json test/PactflowProductsAPI.postman_collection.json -r cli,json",
     "test:convert": "node test/transform.js",
     "test:publish": "node test/publish.js"
   },
