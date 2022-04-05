@@ -1,10 +1,10 @@
 # Example Postman Provider
 
-[![Build Status](https://github.com/pactflow/example-provider-postman/actions/workflows/build.yml/badge.svg)](https://github.com/pactflow/example-provider-postman/actions)
+[![Build Status](https://github.com/pactflow/example-bi-directional-provider-postman/actions/workflows/build.yml/badge.svg)](https://github.com/pactflow/example-bi-directional-provider-postman/actions)
 
-[![Can I deploy Status](https://testdemo.pactflow.io/pacticipants/pactflow-example-provider-postman/branches/master/latest-version/can-i-deploy/to-environment/production/badge)](https://testdemo.pactflow.io/pacticipants/pactflow-example-provider-postman/branches/master/latest-version/can-i-deploy/to-environment/production/badge)
+[![Can I deploy Status](https://testdemo.pactflow.io/pacticipants/pactflow-example-bi-directional-provider-postman/branches/master/latest-version/can-i-deploy/to-environment/production/badge)](https://testdemo.pactflow.io/pacticipants/pactflow-example-bi-directional-provider-postman/branches/master/latest-version/can-i-deploy/to-environment/production/badge)
 
-[![pactflow-example-provider-postman/pactflow-example-consumer](https://testdemo.pactflow.io/pacts/provider/pactflow-example-provider-postman/consumer/pactflow-example-consumer/latest/master/badge.svg)](https://testdemo.pactflow.io/pacts/provider/pactflow-example-provider-postman/consumer/pactflow-example-consumer/latest/master)
+[![pactflow-example-bi-directional-provider-postman/pactflow-example-consumer](https://testdemo.pactflow.io/pacts/provider/pactflow-example-bi-directional-provider-postman/consumer/pactflow-example-consumer/latest/master/badge.svg)](https://testdemo.pactflow.io/pacts/provider/pactflow-example-bi-directional-provider-postman/consumer/pactflow-example-consumer/latest/master)
 
 This is an example "Product" API Provider, to demonstrate the new bi-directional contract capability of Pactflow (previously referred to as Provider driven contracts, or collaborative contracts). It:
 
@@ -15,7 +15,7 @@ This is an example "Product" API Provider, to demonstrate the new bi-directional
 
 What is uploaded to Pactflow is an OpenAPI specification that represents what you actually tested from the Postman collection, to give us confidence it is compatible with a Pact consumer.
 
-It is using a public tenant on Pactflow, which you can access [here](https://testdemo.pactflow.io/) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Pactflow Consumer/Example Pactflow Provider (Postman) pact is published [here](https://testdemo.pactflow.io/overview/provider/pactflow-example-provider-postman/consumer/pactflow-example-consumer).
+It is using a public tenant on Pactflow, which you can access [here](https://testdemo.pactflow.io/) using the credentials `dXfltyFMgNOFZAxr8io9wJ37iUpY42M`/`O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1`. The latest version of the Example Pactflow Consumer/Example Pactflow Provider (Postman) pact is published [here](https://testdemo.pactflow.io/overview/provider/pactflow-example-bi-directional-provider-postman/consumer/pactflow-example-consumer).
 
 In the following diagram, you can see how the provider testing process works.
 
