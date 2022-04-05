@@ -68,7 +68,8 @@ run-and-test: start test stop
 
 test: .env
 	@echo "\n========== STAGE: test ✅ ==========\n"
-	npm run test:convert
+	npm run test:convert 
+	echo "  type:" | sed 's/^\([[:space:]]*\)\(type: object\)/\1additionalProperties: false\n\1\2/' oas/swagger_converted.yml > oas/swagger.yml
 	npm run test
 
 start: server.PID
