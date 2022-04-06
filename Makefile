@@ -27,11 +27,14 @@ publish_and_deploy: publish_contract can_i_deploy $(DEPLOY_TARGET)
 create_branch_version:
 	PACTICIPANT=${PACTICIPANT} ./scripts/create_branch_version.sh
 
-publish_contract: .env create_branch_version
+create_version_tag:
+	PACTICIPANT=${PACTICIPANT} ./scripts/create_version_tag.sh
+
+publish_contract: .env create_branch_version create_version_tag
 	@echo "\n========== STAGE: publish contract + results (success) ==========\n"
 	PACTICIPANT=${PACTICIPANT} npm run test:publish -- true
 
-publish_failure: .env create_branch_version
+publish_failure: .env create_branch_version create_version_tag
 	@echo "\n========== STAGE: publish contract + results (failure) ==========\n"
 	PACTICIPANT=${PACTICIPANT} npm run test:publish -- false
 
