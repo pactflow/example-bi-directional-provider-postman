@@ -25,7 +25,7 @@ ci:
 publish_and_deploy: publish_contract can_i_deploy $(DEPLOY_TARGET)
 
 create_branch_version:
-	./scripts/create_branch_version.sh
+	PACTICIPANT=${PACTICIPANT} ./scripts/create_branch_version.sh
 
 publish_contract: .env create_branch_version
 	@echo "\n========== STAGE: publish contract + results (success) ==========\n"
