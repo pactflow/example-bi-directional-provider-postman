@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "pretest": "rimraf newman",
-    "test": "newman run -e ./test/localhost3001.postman_environment.json test/PactflowProductsAPI.postman_collection.json -r cli,json",
+    "test:newman": "newman run -e ./test/localhost3001.postman_environment.json test/PactflowProductsAPI.postman_collection.json -r cli,json",
+    "test": "./node_modules/.bin/concurrently -k -s \"first\" \"npm start\" \"sleep 3 && npm run test:newman\"",
     "test:convert": "node test/transform.js",
     "test:publish": "node test/publish.js"
   },
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "axios": "^0.21.1",
+    "concurrently": "^7.1.0",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "postman2openapi": "^1.0.0-beta"
