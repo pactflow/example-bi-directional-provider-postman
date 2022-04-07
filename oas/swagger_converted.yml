@@ -7,108 +7,6 @@ info:
 servers:
   - url: "{{host}}"
 paths:
-  "/product/{id}":
-    get:
-      summary: "GET /products/:id"
-      description: Get single product
-      operationId: "get/products/:id"
-      responses:
-        "200":
-          description: "GET /products/:id"
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: "*"
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: "79"
-            Date:
-              schema:
-                type: string
-                example: "Tue, 04 May 2021 10:22:58 GMT"
-            ETag:
-              schema:
-                type: string
-                example: "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    example: "09"
-                  name:
-                    type: string
-                    example: Gem Visa
-                  price:
-                    type: number
-                    example: 99.99
-                  type:
-                    type: string
-                    example: CREDIT_CARD
-                  version:
-                    type: string
-                    example: v1
-              examples:
-                "GET /products/:id":
-                  value:
-                    id: "09"
-                    name: Gem Visa
-                    price: 99.99
-                    type: CREDIT_CARD
-                    version: v1
-        "404":
-          description: "GET /products/:id (404)"
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-                example: "*"
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Content-Length:
-              schema:
-                type: string
-                example: "79"
-            Date:
-              schema:
-                type: string
-                example: "Tue, 04 May 2021 10:22:58 GMT"
-            ETag:
-              schema:
-                type: string
-                example: "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
-            X-Powered-By:
-              schema:
-                type: string
-                example: Express
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-              examples:
-                "GET /products/:id (404)":
-                  value: {}
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
   /products:
     get:
       summary: GET /products
@@ -308,4 +206,106 @@ paths:
                 POST /products/ (400):
                   value:
                     message: invalid product
+  "/products/{id}":
+    get:
+      summary: "GET /products/:id"
+      description: Get single product
+      operationId: "get/products/:id"
+      responses:
+        "200":
+          description: "GET /products/:id"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: "79"
+            Date:
+              schema:
+                type: string
+                example: "Tue, 04 May 2021 10:22:58 GMT"
+            ETag:
+              schema:
+                type: string
+                example: "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "09"
+                  name:
+                    type: string
+                    example: Gem Visa
+                  price:
+                    type: number
+                    example: 99.99
+                  type:
+                    type: string
+                    example: CREDIT_CARD
+                  version:
+                    type: string
+                    example: v1
+              examples:
+                "GET /products/:id":
+                  value:
+                    id: "09"
+                    name: Gem Visa
+                    price: 99.99
+                    type: CREDIT_CARD
+                    version: v1
+        "404":
+          description: "GET /products/:id (404)"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: "*"
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Content-Length:
+              schema:
+                type: string
+                example: "79"
+            Date:
+              schema:
+                type: string
+                example: "Tue, 04 May 2021 10:22:58 GMT"
+            ETag:
+              schema:
+                type: string
+                example: "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                "GET /products/:id (404)":
+                  value: {}
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
 tags: []
