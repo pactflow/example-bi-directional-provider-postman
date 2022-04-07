@@ -16,7 +16,7 @@ all: test
 ## ====================
 
 ci:
-	@if make run-and-test; then \
+	@if make test; then \
 		make publish_success; \
 	else \
 		make publish_failure; \
@@ -53,21 +53,11 @@ deploy_target: can_i_deploy $(DEPLOY_TARGET)
 ## Build/test tasks
 ## =====================
 
-run-and-test: start test stop
-
 test: .env
 	@echo "\n========== STAGE: test ✅ ==========\n"
 	npm run test:convert 
 	echo "  type:" | sed 's/^\([[:space:]]*\)\(type: object\)/\1additionalProperties: false\n\1\2/' oas/swagger_converted.yml > oas/swagger.yml
 	npm run test
-
-start: server.PID
-
-server.PID:
-	{ node server.js & echo $$! > $@; }
-
-stop: server.PID
-	kill `cat $<` && rm $<
 
 ## =====================
 ## Deploy tasks
