@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 
-const oas = fs.readFileSync(path.join(__dirname, "../oas/swagger.yml"));
+const oas = fs.readFileSync(path.join(__dirname, "../oas/swagger_format_error.yml"));
 
 const reportDirPath = path.join(__dirname, "../newman")
 const reportFileName = fs.readdirSync(reportDirPath).filter(fn => fn.endsWith('.json'))[0];
