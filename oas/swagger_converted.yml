@@ -45,7 +45,6 @@ paths:
               schema:
                 type: array
                 items:
-                  additionalProperties: false
                   type: object
                   properties:
                     id:
@@ -89,7 +88,6 @@ paths:
         content:
           application/json:
             schema:
-              additionalProperties: false
               type: object
               properties:
                 id:
@@ -144,7 +142,6 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: false
                 type: object
                 properties:
                   id:
@@ -200,7 +197,6 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: false
                 type: object
                 properties:
                   message:
@@ -246,7 +242,6 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: false
                 type: object
                 properties:
                   id:
@@ -302,7 +297,6 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties: false
                 type: object
                 properties: {}
               examples:
