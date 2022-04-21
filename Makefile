@@ -23,16 +23,15 @@ ci:
 	fi; \
 
 create_branch_version:
+	@echo "\n========== STAGE: pre-publish contract - create_branch_version ==========\n"
+	@echo "\n Creating a branch version to associate with the Provider contract on upload\n"
 	PACTICIPANT=${PACTICIPANT} ./scripts/create_branch_version.sh
 
-create_version_tag:
-	PACTICIPANT=${PACTICIPANT} ./scripts/create_version_tag.sh
-
-publish_success: .env create_branch_version create_version_tag
+publish_success: .env create_branch_version
 	@echo "\n========== STAGE: publish contract + results (success) ==========\n"
 	PACTICIPANT=${PACTICIPANT} npm run test:publish -- true
 
-publish_failure: .env create_branch_version create_version_tag
+publish_failure: .env create_branch_version
 	@echo "\n========== STAGE: publish contract + results (failure) ==========\n"
 	PACTICIPANT=${PACTICIPANT} npm run test:publish -- false
 
@@ -55,9 +54,13 @@ deploy_target: can_i_deploy $(DEPLOY_TARGET)
 
 test: .env
 	@echo "\n========== STAGE: test ✅ ==========\n"
-	npm run test:convert 
-	echo "  type:" | sed 's/^\([[:space:]]*\)\(type: object\)/\1additionalProperties: false\n\1\2/' oas/swagger_converted.yml > oas/swagger.yml
-	npm run test
+	@echo "Running postman collection via Newman CLI runner, to test locally running provider"
+	@npm run test
+	@echo "converting postman collection into OAS spec"
+	@npm run test:convert 
+	@echo "Running transform, to set additionalProperties to false in converted oas spec"
+	@sed 's/^\([[:space:]]*\)\(type: object\)/\1additionalProperties: false\n\1\2/' oas/oas_from_postman_collection.yml > oas/swagger.yml
+	@echo "Transformed oas spec available at ./oas/swagger.yml"
 
 ## =====================
 ## Deploy tasks
