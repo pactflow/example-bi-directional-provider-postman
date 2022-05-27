@@ -10,6 +10,7 @@ env:
   PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
   GIT_COMMIT: ${{ github.sha }}
   GITHUB_REF: ${{ github.ref }}
+  PACT_CLI_DOCKER_VERSION: ${{ github.event.client_payload.pact_cli_docker_version }}
 
 jobs:
   test:
