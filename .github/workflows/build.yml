@@ -1,4 +1,4 @@
-name: Test & Upload to Pactflow - PACT_CLI_DOCKER_VERSION=${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }}
+name: Test & Upload to Pactflow
 
 on:
   push:
