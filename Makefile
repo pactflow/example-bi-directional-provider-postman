@@ -1,4 +1,4 @@
-PACTICIPANT := "pactflow-example-bi-directional-provider-postman"
+PACTICIPANT ?= "pactflow-example-bi-directional-provider-postman"
 GITHUB_REPO := "pactflow/example-bi-directional-provider-postman"
 PACT_CLI_DOCKER_VERSION?=latest
 ## ====================
