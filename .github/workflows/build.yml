@@ -28,10 +28,14 @@ jobs:
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - name: PACT_CLI_DOCKER_VERSION is ${{ env.PACT_CLI_DOCKER_VERSION }}
         run: echo $PACT_CLI_DOCKER_VERSION
+    outputs:
+      PACT_CLI_DOCKER_VERSION: ${{ env.PACT_CLI_DOCKER_VERSION }}
 
   test:
     runs-on: ubuntu-latest
     needs: [set-pact-cli-docker-version]
+    env:
+      PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
@@ -46,6 +50,8 @@ jobs:
   can-i-deploy:
     runs-on: ubuntu-latest
     needs: [test, set-pact-cli-docker-version]
+    env:
+      PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
     steps:
       - uses: actions/checkout@v2
       - name: Can I deploy? 
@@ -55,6 +61,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [can-i-deploy, set-pact-cli-docker-version]
+    env:
+      PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
     steps:
       - uses: actions/checkout@v2
       - name: Deploy
