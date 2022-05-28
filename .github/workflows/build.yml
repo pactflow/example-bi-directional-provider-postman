@@ -36,14 +36,14 @@ jobs:
     needs: [set-pact-cli-docker-version]
     # continue-on-error: ${{ matrix.experimental }}
     strategy:
-      fail-fast: false
+      # fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
         node-version: [14.x, 16.x]
-        experimental: [false]
-        include:
-          - version: 18.x
-            experimental: true
+        # experimental: [false]
+        # include:
+        #   - version: 18.x
+        #     experimental: true
     runs-on: ${{ matrix.os }}
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
