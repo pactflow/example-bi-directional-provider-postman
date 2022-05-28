@@ -34,7 +34,7 @@ jobs:
 
   test:
     needs: [set-pact-cli-docker-version]
-    continue-on-error: ${{ matrix.experimental }}
+    # continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
