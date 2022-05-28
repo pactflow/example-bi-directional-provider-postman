@@ -24,7 +24,7 @@ jobs:
       - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
         name: set PACT_CLI_DOCKER_VERSION to latest
         run: |
-          PACT_CLI_DOCKER_VERSION="${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }}"
+          PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
@@ -43,7 +43,7 @@ jobs:
       - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
         name: set PACT_CLI_DOCKER_VERSION to latest
         run: |
-          PACT_CLI_DOCKER_VERSION="${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }}"
+          PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
