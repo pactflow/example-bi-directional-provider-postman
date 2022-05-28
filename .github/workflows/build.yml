@@ -64,7 +64,6 @@ jobs:
     needs: [test, set-pact-cli-docker-version]
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
-      PACTICIPANT: pactflow-example-bi-directional-provider-postman-${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - name: 🔎 Can I deploy? 
