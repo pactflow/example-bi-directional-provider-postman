@@ -35,8 +35,8 @@ jobs:
   test:
     needs: [set-pact-cli-docker-version]
     continue-on-error: ${{ matrix.experimental }}
-    fail-fast: false
     strategy:
+      fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
         node-version: [14.x, 16.x]
@@ -61,10 +61,10 @@ jobs:
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
     strategy:
+      fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
     runs-on: ${{ matrix.os }}
-    fail-fast: false
     needs: [test, set-pact-cli-docker-version]
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
@@ -77,10 +77,10 @@ jobs:
   # Only deploy from master
   deploy:
     strategy:
+      fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
     runs-on: ${{ matrix.os }}
-    fail-fast: false
     needs: [can-i-deploy, set-pact-cli-docker-version]
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
