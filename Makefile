@@ -1,9 +1,10 @@
-PACTICIPANT := "pactflow-example-bi-directional-provider-postman"
+PACTICIPANT ?= "pactflow-example-bi-directional-provider-postman"
 GITHUB_REPO := "pactflow/example-bi-directional-provider-postman"
+PACT_CLI_DOCKER_VERSION?=latest
 ## ====================
 ## Pactflow Provider Publishing
 ## ====================
-PACT_CLI="docker run --rm -v ${PWD}:/app -w "/app" -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN --env=PACTFLOW_FEATURES=publish-provider-contract pactfoundation/pact-cli:0.50.0.26"
+PACT_CLI="docker run --rm -v ${PWD}:/app -w "/app" -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}"
 OAS_FILE_PATH?=oas/swagger.yml
 REPORT_FILE_PATH?=$(shell ls newman/*)
 REPORT_FILE_CONTENT_TYPE?=text/plain
