@@ -1,4 +1,4 @@
-name: Test example with Pact Docker CLI version - ${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }} 
+name: Test & Upload to Pactflow
 
 on:
   push:
@@ -28,10 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
-        name: set PACT_CLI_DOCKER_VERSION to latest
+        name: set PACT_CLI_DOCKER_VERSION to latest, if version not present
         run: |
           PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
+      - name: PACT_CLI_DOCKER_VERSION is {{ env.PACT_CLI_DOCKER_VERSION }}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
         with:
@@ -47,13 +48,13 @@ jobs:
     needs: test
     steps:
       - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
-        name: set PACT_CLI_DOCKER_VERSION to latest
+        name: set PACT_CLI_DOCKER_VERSION to latest, if version not present
         run: |
           PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
+      - name: PACT_CLI_DOCKER_VERSION is {{ env.PACT_CLI_DOCKER_VERSION }}
       - uses: actions/checkout@v2
-      - run: docker pull pactfoundation/pact-cli:latest
-      - name: Can I deploy?
+      - name: Can I deploy? 
         run: GIT_BRANCH=${GITHUB_REF:11} make can_i_deploy
 
   # Only deploy from master
@@ -62,12 +63,12 @@ jobs:
     needs: can-i-deploy
     steps:
       - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
-        name: set PACT_CLI_DOCKER_VERSION to latest
+        name: set PACT_CLI_DOCKER_VERSION to latest, if version not present
         run: |
           PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
+      - name: PACT_CLI_DOCKER_VERSION is {{ env.PACT_CLI_DOCKER_VERSION }}
       - uses: actions/checkout@v2
-      - run: docker pull pactfoundation/pact-cli:latest
       - name: Deploy
         run: GIT_BRANCH=${GITHUB_REF:11} make deploy
         if: github.ref == 'refs/heads/master'
