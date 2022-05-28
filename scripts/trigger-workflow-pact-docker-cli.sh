@@ -16,18 +16,9 @@
 
 repository_slug=$(git remote get-url $(git remote show) | cut -d':' -f2 | sed 's/\.git//')
 
-if [ -z "$1" ]; then
-    echo -e "\nPlease call '$0 <PACT_CLI_DOCKER_VERSION>' to execute this workflow_dispatch event\n"
-    echo -e "\Usage:\n"
-    echo -e "$0 \$PACT_CLI_DOCKER_VERSION"
-    echo -e "$0 latest"
-    echo -e "$0 0.50.0.27"
-    exit 1
-fi
-
 PACT_CLI_DOCKER_VERSION=${1:-'latest'}
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-output=$(curl -X POST https://api.github.com/repos/${repository_slug}/actions/workflows/build.yml/dispatches \
+output=$(curl -L -v -X POST https://api.github.com/repos/${repository_slug}/actions/workflows/build.yml/dispatches \
     -H 'Accept: application/vnd.github.v3+json' \
     -H "Authorization: Bearer $GITHUB_ACCESS_TOKEN_FOR_PF_RELEASES" \
     -d "{\"ref\":\"$GIT_BRANCH\",\"inputs\":{\"PACT_CLI_DOCKER_VERSION\":\"$PACT_CLI_DOCKER_VERSION\"}}" 2>&1)
@@ -37,5 +28,5 @@ if ! echo "${output}" | grep "HTTP\/2 204" >/dev/null; then
     echo "Failed to trigger release"
     exit 1
 else
-    echo "Release workflow triggered"
+    echo "workflow_dispatch triggered for $repository_slug using PACT_CLI_DOCKER_VERSION=$PACT_CLI_DOCKER_VERSION "
 fi
