@@ -39,7 +39,7 @@ jobs:
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
     steps:
-      - uses: ⬇️ actions/checkout@v3
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '12'
@@ -56,7 +56,7 @@ jobs:
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
     steps:
-      - uses: ⬇️ actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Can I deploy? 
         run: GIT_BRANCH=${GITHUB_REF:11} make can_i_deploy
 
@@ -68,7 +68,7 @@ jobs:
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
     steps:
-      - uses: ⬇️ actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: 🚀 Deploy
         run: GIT_BRANCH=${GITHUB_REF:11} make deploy
         if: github.ref == 'refs/heads/master'
