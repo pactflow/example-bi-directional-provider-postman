@@ -33,6 +33,7 @@ jobs:
           PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - name: PACT_CLI_DOCKER_VERSION is {{ env.PACT_CLI_DOCKER_VERSION }}
+        run: echo $PACT_CLI_DOCKER_VERSION
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
         with:
@@ -53,6 +54,7 @@ jobs:
           PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - name: PACT_CLI_DOCKER_VERSION is {{ env.PACT_CLI_DOCKER_VERSION }}
+        run: echo $PACT_CLI_DOCKER_VERSION
       - uses: actions/checkout@v2
       - name: Can I deploy? 
         run: GIT_BRANCH=${GITHUB_REF:11} make can_i_deploy
@@ -68,6 +70,7 @@ jobs:
           PACT_CLI_DOCKER_VERSION="latest"
           echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - name: PACT_CLI_DOCKER_VERSION is {{ env.PACT_CLI_DOCKER_VERSION }}
+        run: echo $PACT_CLI_DOCKER_VERSION
       - uses: actions/checkout@v2
       - name: Deploy
         run: GIT_BRANCH=${GITHUB_REF:11} make deploy
