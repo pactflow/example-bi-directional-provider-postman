@@ -34,10 +34,16 @@ jobs:
 
   test:
     needs: [set-pact-cli-docker-version]
+    continue-on-error: ${{ matrix.experimental }}
+    fail-fast: false
     strategy:
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [14.x, 16.x]
+        experimental: [false]
+        include:
+          - version: 18.x
+            experimental: true
     runs-on: ${{ matrix.os }}
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
@@ -58,6 +64,7 @@ jobs:
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
     runs-on: ${{ matrix.os }}
+    fail-fast: false
     needs: [test, set-pact-cli-docker-version]
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
@@ -73,6 +80,7 @@ jobs:
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
     runs-on: ${{ matrix.os }}
+    fail-fast: false
     needs: [can-i-deploy, set-pact-cli-docker-version]
     env:
       PACT_CLI_DOCKER_VERSION: ${{ needs.set-pact-cli-docker-version.outputs.PACT_CLI_DOCKER_VERSION}}
