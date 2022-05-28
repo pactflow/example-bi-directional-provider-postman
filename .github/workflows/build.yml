@@ -21,6 +21,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
+        name: set PACT_CLI_DOCKER_VERSION to latest
+        run: |
+          PACT_CLI_DOCKER_VERSION="${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }}"
+          echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
         with:
@@ -35,6 +40,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
+      - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
+        name: set PACT_CLI_DOCKER_VERSION to latest
+        run: |
+          PACT_CLI_DOCKER_VERSION="${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }}"
+          echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
       - name: Can I deploy?
@@ -45,6 +55,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: can-i-deploy
     steps:
+      - if: ${{ env.PACT_CLI_DOCKER_VERSION == '' }}
+        name: set PACT_CLI_DOCKER_VERSION to latest
+        run: |
+          PACT_CLI_DOCKER_VERSION="latest"
+          echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION}" >> $GITHUB_ENV 
       - uses: actions/checkout@v2
       - run: docker pull pactfoundation/pact-cli:latest
       - name: Deploy
