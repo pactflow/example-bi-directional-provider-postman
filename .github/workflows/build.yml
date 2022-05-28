@@ -36,7 +36,7 @@ jobs:
     needs: [set-pact-cli-docker-version]
     # continue-on-error: ${{ matrix.experimental }}
     strategy:
-      # fail-fast: false
+      fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
         node-version: [14.x, 16.x]
