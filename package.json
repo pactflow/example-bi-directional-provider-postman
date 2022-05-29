@@ -7,9 +7,9 @@
     "start": "node server.js",
     "pretest": "rimraf newman",
     "test:newman": "newman run -e ./test/localhost3001.postman_environment.json test/PactflowProductsAPI.postman_collection.json -r cli,json",
-    "test": "./node_modules/.bin/concurrently -k -s \"first\" \"npm start\" \"sleep 3 && npm run test:newman\"",
+    "test": "concurrently -k -s \"first\" \"npm start\" \"sleep 3 && npm run test:newman\"",
     "test:convert": "node test/transform.js",
-    "test:publish": "node test/publish.js"
+    "test:publish": "EXIT_CODE=0 make publish_provider_contract"
   },
   "dependencies": {
     "cors": "^2.8.5",

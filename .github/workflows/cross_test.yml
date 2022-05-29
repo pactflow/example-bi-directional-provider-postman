@@ -1,0 +1,101 @@
+name: Cross test all pact cli versions / providers
+
+on:
+  workflow_dispatch:
+  # inputs aren't available on push, so we set them explicitly in separate steps
+    inputs:
+      PACT_CLI_DOCKER_VERSION:
+        description: Tag from https://hub.docker.com/r/pactfoundation/pact-cli
+        required: true
+        default: 'latest'
+      PACT_CLI_VERSION:
+        description: Tag from https://github.com/pact-foundation/pact_broker-client/releases
+        required: true
+        default: 'latest'
+        type: string
+      PACT_CLI_STANDALONE_VERSION:
+        description: Tag from https://github.com/pact-foundation/pact-ruby-standalone/releases
+        required: true
+        default: 1.88.90
+        type: string
+
+env:
+  PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
+  PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
+  PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
+  GIT_COMMIT: ${{ github.sha }}
+  GITHUB_REF: ${{ github.ref }}
+  PACT_CLI_DOCKER_VERSION: ${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }}
+  PACT_CLI_VERSION: ${{ github.event.inputs.PACT_CLI_VERSION }}
+  PACT_CLI_STANDALONE_VERSION: ${{ github.event.inputs.PACT_CLI_STANDALONE_VERSION }}
+  PACT_CLI_STANDALONE_VERSION_DEFAULT: 1.88.90
+
+jobs:
+  setup:
+    name: 🏗️ setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GIT_BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_VERSION=${PACT_CLI_VERSION:=latest}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION:=latest}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_STANDALONE_VERSION=${PACT_CLI_STANDALONE_VERSION:-${PACT_CLI_STANDALONE_VERSION_DEFAULT}}" >> $GITHUB_ENV 
+    outputs:
+      GIT_BRANCH: ${{ env.GIT_BRANCH }}
+      PACT_CLI_VERSION: ${{ env.PACT_CLI_VERSION }}
+      PACT_CLI_DOCKER_VERSION: ${{ env.PACT_CLI_DOCKER_VERSION }}
+      PACT_CLI_STANDALONE_VERSION: ${{ env.PACT_CLI_STANDALONE_VERSION }}
+
+  cross-test:
+    name: 💥 cross-test
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest', 'windows-latest','macos-latest']
+        pact_tool: ['docker', 'ruby_cli', 'ruby_standalone' ]
+        node-version: [16.x]
+    runs-on: ${{ matrix.os }}
+    env:
+      PACT_CLI_DOCKER_VERSION: ${{ needs.setup.outputs.PACT_CLI_DOCKER_VERSION }}
+      PACT_CLI_VERSION: ${{ needs.setup.outputs.PACT_CLI_VERSION}}
+      PACT_CLI_STANDALONE_VERSION: ${{ needs.setup.outputs.PACT_CLI_STANDALONE_VERSION}}
+      PACT_TOOL: ${{ matrix.pact_tool }}
+      PACTICIPANT: pactflow-example-bi-directional-provider-postman-${{ matrix.os }}-${{ matrix.pact_tool }}
+      GIT_BRANCH: ${{ needs.setup.outputs.GIT_BRANCH }}
+    steps:
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v2
+      - name: 🚨 Setup Ruby
+        uses: ruby/setup-ruby@v1 
+        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone') && runner.os == 'Linux' }}
+        with:
+          ruby-version: 2.7
+          bundler: none
+      # 1. we add a fallback for windows/darwin runners as they cannot run docker
+      # 2. we fallback to the pact_broker-client, as the pact-ruby-standalone does not have the pactflow command
+      # we can remove the next two steps, and uncomment the 3 steps that are commented out
+      - name: 🔧 install-pact-ruby-cli (also runs for macOS/docker) 
+        if: ${{ ((env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone') && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
+        run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $GITHUB_ENV
+      - name: 🔧 install-pact-ruby-cli on Windows (also runs for windows/docker) 
+        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone' || env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
+        run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $env:GITHUB_ENV
+      # - if: ${{ (env.PACT_TOOL == 'ruby_cli' && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
+      #   run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $GITHUB_ENV
+      # - if: ${{ (env.PACT_TOOL == 'ruby_cli'|| env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
+      #   run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $env:GITHUB_ENV
+      # - name: 🔨install-pact-ruby-standalone
+      #   if: ${{ env.PACT_TOOL == 'ruby_standalone' }}
+      #   run: make install-pact-ruby-standalone
+      - name: 👷 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: 📦️ Install
+        run: npm i
+      - name: 🧪 Test and Publish Provider Contract to Pactflow 📈
+        run: make ci
+      - name: 🛂 Can I deploy?
+        run: make can_i_deploy
+      - name: 🚀 Deploy
+        run: make deploy

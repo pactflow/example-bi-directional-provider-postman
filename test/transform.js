@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const postman = JSON.stringify(collection);
 const openapi = transpile(postman, 'yaml');
-const filePath = __dirname + "/../oas/oas_from_postman_collection.yml"
+const filePath = __dirname + "/../oas/swagger.yml"
 
 fs.writeFileSync(filePath, openapi);
 
