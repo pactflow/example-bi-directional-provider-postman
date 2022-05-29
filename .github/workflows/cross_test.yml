@@ -1,6 +1,7 @@
 name: Cross test all pact cli versions / providers
 
 on:
+  push:
   workflow_dispatch:
   # inputs aren't available on push, so we set them explicitly in separate steps
     inputs:
