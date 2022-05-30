@@ -54,5 +54,5 @@ jobs:
         with:
           workflow: cross_test.yml
           repo: ${{ matrix.repos }}
-          token: ${{ secrets.GITHUBRELEASETOKEN }}
+          token: ${{ secrets.GHTOKENFORTRIGGERINGPACTDOCSUPDATE }}
           inputs: '{ "PACT_CLI_VERSION": ${{ env.PACT_CLI_VERSION }}, "PACT_CLI_DOCKER_VERSION": ${{ env.PACT_CLI_DOCKER_VERSION }}, "PACT_CLI_STANDALONE_VERSION": ${{ env.PACT_CLI_STANDALONE_VERSION }} }'
