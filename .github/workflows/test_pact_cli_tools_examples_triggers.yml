@@ -1,0 +1,58 @@
+name: trigger cross test on pact cli tools on multiple example repos
+on:
+  workflow_dispatch:
+    inputs: # inputs aren't available on push, so we set them explicitly in separate steps
+      PACT_CLI_DOCKER_VERSION:
+        description: Tag from https://hub.docker.com/r/pactfoundation/pact-cli
+        required: true
+        default: 'latest'
+      PACT_CLI_VERSION:
+        description: Tag from https://github.com/pact-foundation/pact_broker-client/releases
+        required: true
+        default: 'latest'
+        type: string
+      PACT_CLI_STANDALONE_VERSION:
+        description: Tag from https://github.com/pact-foundation/pact-ruby-standalone/releases
+        required: true
+        default: 1.88.90
+        type: string  
+        
+jobs:
+
+  setup:
+    name: 🏗️ setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GIT_BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_VERSION=${PACT_CLI_VERSION:=latest}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION:=latest}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_STANDALONE_VERSION=${PACT_CLI_STANDALONE_VERSION:-${PACT_CLI_STANDALONE_VERSION_DEFAULT}}" >> $GITHUB_ENV 
+    outputs:
+      GIT_BRANCH: ${{ env.GIT_BRANCH }}
+      PACT_CLI_VERSION: ${{ env.PACT_CLI_VERSION }}
+      PACT_CLI_DOCKER_VERSION: ${{ env.PACT_CLI_DOCKER_VERSION }}
+      PACT_CLI_STANDALONE_VERSION: ${{ env.PACT_CLI_STANDALONE_VERSION }}
+
+
+  test_examples_pact_cli:
+    strategy:
+      fail-fast: false
+      matrix:
+        repos: 
+          [
+            'pactflow/example-bi-directional-provider-postman',
+            'pactflow/example-bi-directional-provider-cypress' 
+          ]
+    runs-on: ubuntu-latest
+    env:
+      PACT_CLI_VERSION: ${{ needs.setup.outputs.PACT_CLI_VERSION}}
+      PACT_CLI_DOCKER_VERSION: ${{ needs.setup.outputs.PACT_CLI_DOCKER_VERSION }}
+      PACT_CLI_STANDALONE_VERSION: ${{ needs.setup.outputs.PACT_CLI_STANDALONE_VERSION}}
+    steps:
+      - name: cross test pact-ruby-standalone / pact_broker-client / pact-ruby-cli (docker)
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: cross_test.yml
+          repo: ${{ matrix.repos }}
+          token: ${{ secrets.GITHUBRELEASETOKEN }}
+          inputs: '{ "PACT_CLI_VERSION": ${{ env.PACT_CLI_VERSION }}, "PACT_CLI_DOCKER_VERSION": ${{ env.PACT_CLI_DOCKER_VERSION }}, "PACT_CLI_STANDALONE_VERSION": ${{ env.PACT_CLI_STANDALONE_VERSION }} }'
