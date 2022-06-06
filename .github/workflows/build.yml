@@ -40,4 +40,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: 🚀 Deploy
         run: GIT_BRANCH=${GITHUB_REF:11} make deploy
-        # if: github.ref == 'refs/heads/main' # note this is set in our Makefile
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
