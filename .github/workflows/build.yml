@@ -21,7 +21,7 @@ jobs:
       - name: 📦️ Install
         run: npm i
       - name: 🧪 Test and upload to Pactflow 📈
-        run: GIT_BRANCH=${GITHUB_REF:11} make ci
+        run: GIT_BRANCH=${GITHUB_REF:11} make test_and_publish
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
