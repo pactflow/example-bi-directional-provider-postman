@@ -69,12 +69,12 @@ all: test
 
 ci:
 	@if make test; then \
-		EXIT_CODE=0 make publish_and_deploy; \
+		EXIT_CODE=0 make ${CI_COMMAND}; \
 	else \
-		EXIT_CODE=1 make publish_and_deploy; \
+		EXIT_CODE=1 make ${CI_COMMAND}; \
 	fi; \
 
-publish_and_deploy: ${CI_COMMAND} can_i_deploy $(DEPLOY_TARGET)
+ci_full: ci can_i_deploy $(DEPLOY_TARGET)
 
 publish_provider_contract: .env
 	@echo "\n========== STAGE: publish provider contract (spec + results) ==========\n"
@@ -92,7 +92,7 @@ publish_provider_contract: .env
 # Run the ci target from a developer machine with the environment variables
 # set as if it was on Github Actions.
 # Use this for quick feedback when playing around with your workflows.
-fake_ci: .env ci
+fake_ci: .env ci_full
 
 ci_ruby_cli:
 	PACT_TOOL=ruby_cli make ci
