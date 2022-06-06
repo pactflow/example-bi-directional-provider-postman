@@ -99,3 +99,4 @@ jobs:
         run: make can_i_deploy
       - name: 🚀 Deploy
         run: make deploy
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
