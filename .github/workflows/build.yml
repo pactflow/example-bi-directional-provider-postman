@@ -21,7 +21,7 @@ jobs:
       - name: 📦️ Install
         run: npm i
       - name: 🧪 Test and upload to Pactflow 📈
-        run: GIT_BRANCH=${GITHUB_REF:11} make ci
+        run: GIT_BRANCH=${GITHUB_REF:11} make test_and_publish
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
@@ -40,4 +40,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: 🚀 Deploy
         run: GIT_BRANCH=${GITHUB_REF:11} make deploy
-        # if: github.ref == 'refs/heads/main' # note this is set in our Makefile
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
