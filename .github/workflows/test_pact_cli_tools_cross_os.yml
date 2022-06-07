@@ -94,8 +94,9 @@ jobs:
       - name: 📦️ Install
         run: npm i
       - name: 🧪 Test and Publish Provider Contract to Pactflow 📈
-        run: make ci
+        run: make test_and_publish
       - name: 🛂 Can I deploy?
         run: make can_i_deploy
       - name: 🚀 Deploy
-        run: make deploy
+        run: make deploy # Only deploy from master/main
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
