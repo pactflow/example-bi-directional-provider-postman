@@ -2,8 +2,6 @@ name: Test & Upload to Pactflow
 
 on:
   push:
-    branches:    
-      - '!test-github-actions'
 
 env:
   PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
