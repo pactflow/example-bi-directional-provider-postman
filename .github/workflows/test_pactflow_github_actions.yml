@@ -1,0 +1,73 @@
+name: Test Pactflow GitHub Actions
+
+on:
+  workflow_dispatch:
+
+env:
+  PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
+  PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
+  PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
+  GIT_COMMIT: ${{ github.sha }}
+  GITHUB_REF: ${{ github.ref }}
+  PACTICIPANT: "pactflow-example-bi-directional-provider-postman-github-actions"
+  pact_broker: https://testdemo.pactflow.io
+
+jobs:
+
+  setup:
+    name: 🏗️ setup
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GIT_BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_VERSION=${PACT_CLI_VERSION:=latest}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION:=latest}" >> $GITHUB_ENV 
+      - run: echo "PACT_CLI_STANDALONE_VERSION=${PACT_CLI_STANDALONE_VERSION:-${PACT_CLI_STANDALONE_VERSION_DEFAULT}}" >> $GITHUB_ENV 
+    outputs:
+      GIT_BRANCH: ${{ env.GIT_BRANCH }}
+
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: 📦️ Install
+        run: npm i
+      - name: 🧪 Test
+        run: make test
+      - run: echo "results_file=$(ls newman/*)" >> $GITHUB_ENV 
+        name: get dynamically named results file
+      - uses: pactflow/actions/publish-provider-contract@v0.0.2
+        env:
+          oas_file: oas/swagger.yml
+          results_file: ${{ env.results_file }}
+          pact_broker: ${{ env.PACT_BROKER_BASE_URL }}
+          pact_broker_token: ${{ env.PACT_BROKER_TOKEN }}
+          application_name: ${{ env.PACTICIPANT }}
+          version: ${{ env.GIT_COMMIT }}
+
+  # Runs on branches as well, so we know the status of our PRs
+  can-i-deploy:
+    runs-on: ubuntu-latest
+    needs: [setup,test]
+    steps:
+      - uses: pactflow/actions/can-i-deploy@v0.0.2
+        env:
+          to: "production"
+          pact_broker: ${{ env.PACT_BROKER_BASE_URL }}
+          pact_broker_token: ${{ env.PACT_BROKER_TOKEN }}
+          application_name: ${{ env.PACTICIPANT }}
+          version: ${{ env.GIT_COMMIT }}
+
+  # Only deploy from master/main
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [setup,can-i-deploy]
+    steps:
+      - uses: actions/checkout@v3
+      - name: 🚀 Deploy
+        run: GIT_BRANCH=${GITHUB_REF:11} make deploy
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
