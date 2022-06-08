@@ -189,7 +189,7 @@ install-pact-ruby-standalone:
 		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
 		./pact/bin/pact-mock-service --help start && \
 		./pact/bin/pact-provider-verifier --help verify;; \
-	Linux) curl -LO https://github.com/you54fpact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
+	Linux) curl -LO https://github.com/you54f/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
 		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
 		./pact/bin/pact-mock-service --help start && \
 		./pact/bin/pact-provider-verifier --help verify ;; \
