@@ -73,20 +73,15 @@ jobs:
           bundler: none
       # 1. we add a fallback for windows/darwin runners as they cannot run docker
       # 2. we fallback to the pact_broker-client, as the pact-ruby-standalone does not have the pactflow command
-      # we can remove the next two steps, and uncomment the 3 steps that are commented out
       - name: 🔧 install-pact-ruby-cli (also runs for macOS/docker) 
-        if: ${{ ((env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone') && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
+        if: ${{ (env.PACT_TOOL == 'ruby_cli' && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
         run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $GITHUB_ENV
       - name: 🔧 install-pact-ruby-cli on Windows (also runs for windows/docker) 
-        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone' || env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
+        if: ${{ (env.PACT_TOOL == 'ruby_cli'|| env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
         run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $env:GITHUB_ENV
-      # - if: ${{ (env.PACT_TOOL == 'ruby_cli' && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
-      #   run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $GITHUB_ENV
-      # - if: ${{ (env.PACT_TOOL == 'ruby_cli'|| env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
-      #   run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $env:GITHUB_ENV
-      # - name: 🔨install-pact-ruby-standalone
-      #   if: ${{ env.PACT_TOOL == 'ruby_standalone' }}
-      #   run: make install-pact-ruby-standalone
+      - name: 🔧 install-pact-ruby-standalone
+        if: ${{ env.PACT_TOOL == 'ruby_standalone' }}
+        run: make install-pact-ruby-standalone
       - name: 👷 Setup Node
         uses: actions/setup-node@v3
         with:
