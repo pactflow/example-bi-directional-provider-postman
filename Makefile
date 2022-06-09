@@ -1,6 +1,6 @@
 PACTICIPANT ?= "pactflow-example-bi-directional-provider-postman"
 GITHUB_REPO := "pactflow/example-bi-directional-provider-postman"
-COMMIT?=$(shell npx -y absolute-version)
+VERSION?=$(shell npx -y absolute-version)
 BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
 
 ## ====================
@@ -57,7 +57,7 @@ publish_provider_contract: .env
 	${PACTFLOW_CLI_COMMAND} publish-provider-contract \
       ${OAS_PATH} \
       --provider ${PACTICIPANT} \
-      --provider-app-version ${COMMIT} \
+      --provider-app-version ${VERSION} \
       --branch ${BRANCH} \
       --content-type application/yaml \
       --verification-exit-code=${EXIT_CODE} \
@@ -85,7 +85,7 @@ can_i_deploy: .env
 	@echo "\n========== STAGE: can-i-deploy? 🌉 ==========\n"
 	${PACT_BROKER_COMMAND} can-i-deploy \
 	--pacticipant ${PACTICIPANT} \
-	--version ${COMMIT} \
+	--version ${VERSION} \
 	--to-environment production
 
 deploy_app:
@@ -96,7 +96,7 @@ record_deployment: .env
 	${PACT_BROKER_COMMAND} \
 	record_deployment \
 	--pacticipant ${PACTICIPANT} \
-	--version ${COMMIT} \
+	--version ${VERSION} \
 	--environment production
 
 ## =====================
