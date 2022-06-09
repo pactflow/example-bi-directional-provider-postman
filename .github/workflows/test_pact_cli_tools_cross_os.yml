@@ -16,7 +16,7 @@ on:
       PACT_CLI_STANDALONE_VERSION:
         description: Tag from https://github.com/pact-foundation/pact-ruby-standalone/releases
         required: true
-        default: 1.88.90
+        default: 1.89.00-rc1
         type: string
 
 env:
