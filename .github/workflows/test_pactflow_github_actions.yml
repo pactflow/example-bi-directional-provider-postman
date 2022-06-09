@@ -18,12 +18,12 @@ jobs:
     name: 🏗️ setup
     runs-on: ubuntu-latest
     steps:
-      - run: echo "GIT_BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV 
+      - run: echo "BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV 
       - run: echo "PACT_CLI_VERSION=${PACT_CLI_VERSION:=latest}" >> $GITHUB_ENV 
       - run: echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION:=latest}" >> $GITHUB_ENV 
       - run: echo "PACT_CLI_STANDALONE_VERSION=${PACT_CLI_STANDALONE_VERSION:-${PACT_CLI_STANDALONE_VERSION_DEFAULT}}" >> $GITHUB_ENV 
     outputs:
-      GIT_BRANCH: ${{ env.GIT_BRANCH }}
+      BRANCH: ${{ env.BRANCH }}
 
 
   test:
@@ -69,5 +69,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 🚀 Deploy
-        run: GIT_BRANCH=${GITHUB_REF:11} make deploy
+        run: BRANCH=${GITHUB_REF:11} make deploy
         if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'

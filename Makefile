@@ -1,124 +1,22 @@
 PACTICIPANT ?= "pactflow-example-bi-directional-provider-postman"
 GITHUB_REPO := "pactflow/example-bi-directional-provider-postman"
-PACT_CLI_DOCKER_VERSION?=0.50.0.28
-PACT_CLI_VERSION?=latest
-PACT_CLI_STANDALONE_VERSION?=1.89.00-rc1
+COMMIT?=$(shell git rev-parse --short HEAD)
+BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
+
 ## ====================
-## Pactflow Provider Publishing
+## Demo Specific Example Variables
 ## ====================
 CI_COMMAND?=publish_provider_contract
-PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
-PACT_BROKER_COMMAND=pact-broker
-PACTFLOW_CLI_COMMAND=pactflow
-PACT_TOOL?=docker
 OAS_PATH=oas/swagger.yml
 REPORT_PATH?=$(shell ls newman/*)
 REPORT_FILE_CONTENT_TYPE?=text/plain
 VERIFIER_TOOL?=postman
-GIT_COMMIT?=$(shell git rev-parse --short HEAD)
-GIT_BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
-## ====================
-## Multi-platform detection and support
-## ====================
-SHELL := /bin/bash
-
-ifeq '$(findstring ;,$(PATH))' ';'
-	detected_OS := Windows
-else
-	detected_OS := $(shell uname 2>/dev/null || echo Unknown)
-	detected_OS := $(patsubst CYGWIN%,Cygwin,$(detected_OS))
-	detected_OS := $(patsubst MSYS%,MSYS,$(detected_OS))
-	detected_OS := $(patsubst MINGW%,MSYS,$(detected_OS))
-endif
-
-# Only deploy from master
-ifeq ($(GIT_BRANCH),master)
-	DEPLOY_TARGET=deploy
-else
-	DEPLOY_TARGET=no_deploy
-endif
-
-
-ifeq ($(PACT_TOOL),ruby_standalone)
-# add path to standalone, and add bat if windows
-	ifneq ($(filter $(detected_OS),Windows MSYS),)
-		PACT_BROKER_COMMAND:="./pact/bin/${PACT_BROKER_COMMAND}.bat"
-		PACTFLOW_CLI_COMMAND:="./pact/bin/${PACTFLOW_CLI_COMMAND}.bat"
-	else
-		PACT_BROKER_COMMAND:="./pact/bin/${PACT_BROKER_COMMAND}"
-		PACTFLOW_CLI_COMMAND:="./pact/bin/${PACTFLOW_CLI_COMMAND}"
-	endif
-endif
-
-ifeq ($(PACT_TOOL),docker)
-# add docker run command path
-	PACT_BROKER_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACT_BROKER_COMMAND}
-	PACTFLOW_CLI_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACTFLOW_CLI_COMMAND}
-endif
-
-
-echo_things:
-	echo ${OAS_PATH}
-	echo ${REPORT_PATH}
-	echo ${PACT_BROKER_COMMAND}
-	echo ${PACTFLOW_CLI_COMMAND}
-
-all: test
-
-## ====================
-## CI tasks
-## ====================
-
-ci: .env test_and_publish can_i_deploy $(DEPLOY_TARGET)
-
-test_and_publish:
-	@if make test; then \
-		EXIT_CODE=0 make ${CI_COMMAND}; \
-	else \
-		EXIT_CODE=1 make ${CI_COMMAND}; \
-	fi; \
-
-publish_provider_contract: .env
-	@echo "\n========== STAGE: publish provider contract (spec + results) ==========\n"
-	${PACTFLOW_CLI_COMMAND} publish-provider-contract \
-      ${OAS_PATH} \
-      --provider ${PACTICIPANT} \
-      --provider-app-version ${GIT_COMMIT} \
-      --branch ${GIT_BRANCH} \
-      --content-type application/yaml \
-      --verification-exit-code=${EXIT_CODE} \
-      --verification-results ${REPORT_PATH} \
-      --verification-results-content-type ${REPORT_FILE_CONTENT_TYPE}\
-      --verifier ${VERIFIER_TOOL}
-
-# Run the ci target from a developer machine with the environment variables
-# set as if it was on Github Actions.
-# Use this for quick feedback when playing around with your workflows.
-fake_ci: .env ci
-
-ci_ruby_cli:
-	PACT_TOOL=ruby_cli make ci
-
-fake_ci_ruby_cli:
-	PACT_TOOL=ruby_cli make fake_ci
-	
-fake_ci_docker:
-	PACT_TOOL=docker make fake_ci
-
-ci_docker:
-	PACT_TOOL=docker make ci
-	
-fake_ci_ruby_standalone:
-	PACT_TOOL=ruby_standalone make fake_ci
-
-ci_ruby_standalone:
-	PACT_TOOL=ruby_standalone make ci
-
-deploy_target: can_i_deploy $(DEPLOY_TARGET)
 
 ## =====================
 ## Build/test tasks
 ## =====================
+
+install: npm install 
 
 test: .env
 	@echo "\n========== STAGE: test ✅ ==========\n"
@@ -128,46 +26,15 @@ test: .env
 	@npm run test:convert 
 
 ## =====================
-## Deploy tasks
+## Pact CLI install/uninstall tasks
 ## =====================
-
-deploy: deploy_app record_deployment
-
-no_deploy:
-	@echo "Not deploying as not on master branch"
-
-can_i_deploy: .env
-	@echo "\n========== STAGE: can-i-deploy? 🌉 ==========\n"
-	${PACT_BROKER_COMMAND} can-i-deploy \
-	--pacticipant ${PACTICIPANT} \
-	--version ${GIT_COMMIT} \
-	--to-environment production
-
-deploy_app:
-	@echo "\n========== STAGE: deploy 🚀 ==========\n"
-	@echo "Deploying to prod"
-
-record_deployment: .env
-	${PACT_BROKER_COMMAND} \
-	record_deployment \
-	--pacticipant ${PACTICIPANT} \
-	--version ${GIT_COMMIT} \
-	--environment production
-
-## =====================
-## Pactflow set up tasks
-## =====================
-
-## ======================
-## Misc
-## ======================
-
-convert:
-	npm run test:convert
-.env:
-	touch .env
-
-.PHONY: start stop test
+PACT_TOOL?=docker
+PACT_CLI_DOCKER_VERSION?=0.50.0.28
+PACT_CLI_VERSION?=latest
+PACT_CLI_STANDALONE_VERSION?=1.89.00-rc1
+PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
+PACT_BROKER_COMMAND=pact-broker
+PACTFLOW_CLI_COMMAND=pactflow
 
 install-pact-ruby-cli:
 	case "${PACT_CLI_VERSION}" in \
@@ -193,3 +60,136 @@ install-pact-ruby-standalone:
 		./pact/bin/pact-mock-service --help start && \
 		./pact/bin/pact-provider-verifier --help verify ;; \
 	esac
+
+
+
+
+
+
+
+
+
+
+
+## ====================
+## CI tasks
+## ====================
+
+all: ci
+all_docker: PACT_TOOL=docker ci
+all_ruby_standalone: PACT_TOOL=ruby_standalone ci
+all_ruby_cli: PACT_TOOL=ruby_cli ci
+
+# Run the ci target from a developer machine with the environment variables
+# set as if it was on Github Actions.
+# Use this for quick feedback when playing around with your workflows.
+ci: .env test_and_publish can_i_deploy $(DEPLOY_TARGET)
+
+ci_ruby_cli:
+	PACT_TOOL=ruby_cli make ci
+ci_docker:
+	PACT_TOOL=docker make ci
+ci_ruby_standalone:
+	PACT_TOOL=ruby_standalone make ci
+
+test_and_publish:
+	@if make test; then \
+		EXIT_CODE=0 make ${CI_COMMAND}; \
+	else \
+		EXIT_CODE=1 make ${CI_COMMAND}; \
+	fi; \
+
+publish_provider_contract: .env
+	@echo "\n========== STAGE: publish provider contract (spec + results) ==========\n"
+	${PACTFLOW_CLI_COMMAND} publish-provider-contract \
+      ${OAS_PATH} \
+      --provider ${PACTICIPANT} \
+      --provider-app-version ${COMMIT} \
+      --branch ${BRANCH} \
+      --content-type application/yaml \
+      --verification-exit-code=${EXIT_CODE} \
+      --verification-results ${REPORT_PATH} \
+      --verification-results-content-type ${REPORT_FILE_CONTENT_TYPE}\
+      --verifier ${VERIFIER_TOOL}
+
+
+## =====================
+## Deploy tasks
+## =====================
+
+# Only deploy from master
+ifeq ($(BRANCH),master)
+	DEPLOY_TARGET=deploy
+else
+	DEPLOY_TARGET=no_deploy
+endif
+
+deploy_target: can_i_deploy $(DEPLOY_TARGET)
+
+deploy: deploy_app record_deployment
+no_deploy:
+	@echo "Not deploying as not on master branch"
+
+can_i_deploy: .env
+	@echo "\n========== STAGE: can-i-deploy? 🌉 ==========\n"
+	${PACT_BROKER_COMMAND} can-i-deploy \
+	--pacticipant ${PACTICIPANT} \
+	--version ${COMMIT} \
+	--to-environment production
+
+deploy_app:
+	@echo "\n========== STAGE: deploy 🚀 ==========\n"
+	@echo "Deploying to prod"
+
+record_deployment: .env
+	${PACT_BROKER_COMMAND} \
+	record_deployment \
+	--pacticipant ${PACTICIPANT} \
+	--version ${COMMIT} \
+	--environment production
+
+
+
+
+## ====================
+## Multi-platform detection and support
+## ====================
+SHELL := /bin/bash
+
+ifeq '$(findstring ;,$(PATH))' ';'
+	detected_OS := Windows
+else
+	detected_OS := $(shell uname 2>/dev/null || echo Unknown)
+	detected_OS := $(patsubst CYGWIN%,Cygwin,$(detected_OS))
+	detected_OS := $(patsubst MSYS%,MSYS,$(detected_OS))
+	detected_OS := $(patsubst MINGW%,MSYS,$(detected_OS))
+endif
+
+ifeq ($(PACT_TOOL),ruby_standalone)
+# add path to standalone, and add bat if windows
+	ifneq ($(filter $(detected_OS),Windows MSYS),)
+		PACT_BROKER_COMMAND:="./pact/bin/${PACT_BROKER_COMMAND}.bat"
+		PACTFLOW_CLI_COMMAND:="./pact/bin/${PACTFLOW_CLI_COMMAND}.bat"
+	else
+		PACT_BROKER_COMMAND:="./pact/bin/${PACT_BROKER_COMMAND}"
+		PACTFLOW_CLI_COMMAND:="./pact/bin/${PACTFLOW_CLI_COMMAND}"
+	endif
+endif
+
+ifeq ($(PACT_TOOL),docker)
+# add docker run command path
+	PACT_BROKER_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACT_BROKER_COMMAND}
+	PACTFLOW_CLI_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACTFLOW_CLI_COMMAND}
+endif
+
+## ======================
+## Misc
+## ======================
+
+convert:
+	npm run test:convert
+.env:
+	touch .env
+
+.PHONY: start stop test
+
