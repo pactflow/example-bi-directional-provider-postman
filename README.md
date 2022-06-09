@@ -135,7 +135,7 @@ Using alternate pact CLI tools.
 
 ## OS/Platform specific considerations
 
-The makefile has been configured to run on Unix/Windows and MacOS based systems, and tested against Github Ctions
+The makefile has been configured to run on Unix/Windows and MacOS based systems, and tested against Github Actions
 
 They can be run locally on Unix/Windows and MacOS, or on Windows via [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) or a shell with bash.
 

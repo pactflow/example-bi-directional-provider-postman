@@ -1,12 +1,11 @@
 PACTICIPANT ?= "pactflow-example-bi-directional-provider-postman"
 GITHUB_REPO := "pactflow/example-bi-directional-provider-postman"
-COMMIT?=$(shell git rev-parse --short HEAD)
+COMMIT?=$(shell npx -y absolute-version)
 BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
 
 ## ====================
 ## Demo Specific Example Variables
 ## ====================
-CI_COMMAND?=publish_provider_contract
 OAS_PATH=oas/swagger.yml
 REPORT_PATH?=$(shell ls newman/*)
 REPORT_FILE_CONTENT_TYPE?=text/plain
@@ -24,46 +23,6 @@ test: .env
 	@npm run test
 	@echo "converting postman collection into OAS spec"
 	@npm run test:convert 
-
-## =====================
-## Pact CLI install/uninstall tasks
-## =====================
-PACT_TOOL?=docker
-PACT_CLI_DOCKER_VERSION?=0.50.0.28
-PACT_CLI_VERSION?=latest
-PACT_CLI_STANDALONE_VERSION?=1.89.00-rc1
-PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
-PACT_BROKER_COMMAND=pact-broker
-PACTFLOW_CLI_COMMAND=pactflow
-
-install-pact-ruby-cli:
-	case "${PACT_CLI_VERSION}" in \
-	latest) gem install pact_broker-client;; \
-	"") gem install pact_broker-client;; \
-		*) gem install pact_broker-client -v ${PACT_CLI_VERSION} ;; \
-	esac
-
-uninstall-pact-ruby-cli:
-	gem uninstall -aIx pact_broker-client
-
-install-pact-ruby-standalone:
-	case "${detected_OS}" in \
-	Windows|MSYS) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
-		unzip pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
-		./pact/bin/pact-mock-service.bat --help && \
-		./pact/bin/pact-provider-verifier.bat --help && \
-		./pact/bin/pactflow help;; \
-	Darwin) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
-		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
-		./pact/bin/pact-mock-service --help && \
-		./pact/bin/pact-provider-verifier --help && \
-		./pact/bin/pactflow help;; \
-	Linux) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
-		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
-		./pact/bin/pact-mock-service --help && \
-		./pact/bin/pact-provider-verifier --help && \
-		./pact/bin/pactflow help;; \
-	esac
 
 ## ====================
 ## CI tasks
@@ -86,15 +45,15 @@ ci_docker:
 ci_ruby_standalone:
 	PACT_TOOL=ruby_standalone make ci
 
-test_and_publish:
+test_and_publish_provider_contract:
 	@if make test; then \
-		EXIT_CODE=0 make ${CI_COMMAND}; \
+		EXIT_CODE=0 make publish_provider_contract; \
 	else \
-		EXIT_CODE=1 make ${CI_COMMAND}; \
+		EXIT_CODE=1 make publish_provider_contract; \
 	fi; \
 
 publish_provider_contract: .env
-	@echo "\n========== STAGE: publish provider contract (spec + results) ==========\n"
+	@echo "\n========== STAGE: publish-provider-contract (spec + results) ==========\n"
 	${PACTFLOW_CLI_COMMAND} publish-provider-contract \
       ${OAS_PATH} \
       --provider ${PACTICIPANT} \
@@ -110,16 +69,15 @@ publish_provider_contract: .env
 ## Deploy tasks
 ## =====================
 
-# Only deploy from master
-ifeq ($(BRANCH),master)
+# Only deploy from main/master
+ifneq ($(filter $(BRANCH),main master),)
 	DEPLOY_TARGET=deploy
 else
 	DEPLOY_TARGET=no_deploy
 endif
 
-deploy_target: can_i_deploy $(DEPLOY_TARGET)
-
 deploy: deploy_app record_deployment
+deploy_target: can_i_deploy $(DEPLOY_TARGET)
 no_deploy:
 	@echo "Not deploying as not on master branch"
 
@@ -141,10 +99,18 @@ record_deployment: .env
 	--version ${COMMIT} \
 	--environment production
 
-## ====================
+## =====================
 ## Multi-platform detection and support
-## ====================
+## Pact CLI install/uninstall tasks
+## =====================
 SHELL := /bin/bash
+PACT_TOOL?=docker
+PACT_CLI_DOCKER_VERSION?=0.50.0.28
+PACT_CLI_VERSION?=latest
+PACT_CLI_STANDALONE_VERSION?=1.89.00-rc1
+PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
+PACT_BROKER_COMMAND=pact-broker
+PACTFLOW_CLI_COMMAND=pactflow
 
 ifeq '$(findstring ;,$(PATH))' ';'
 	detected_OS := Windows
@@ -171,6 +137,36 @@ ifeq ($(PACT_TOOL),docker)
 	PACT_BROKER_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACT_BROKER_COMMAND}
 	PACTFLOW_CLI_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACTFLOW_CLI_COMMAND}
 endif
+
+
+install-pact-ruby-cli:
+	case "${PACT_CLI_VERSION}" in \
+	latest) gem install pact_broker-client;; \
+	"") gem install pact_broker-client;; \
+		*) gem install pact_broker-client -v ${PACT_CLI_VERSION} ;; \
+	esac
+
+uninstall-pact-ruby-cli:
+	gem uninstall -aIx pact_broker-client
+
+install-pact-ruby-standalone:
+	case "${detected_OS}" in \
+	Windows|MSYS) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
+		unzip pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
+		./pact/bin/pact-mock-service.bat --help && \
+		./pact/bin/pact-provider-verifier.bat --help && \
+		./pact/bin/pactflow.bat help;; \
+	Darwin) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
+		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
+		./pact/bin/pact-mock-service --help && \
+		./pact/bin/pact-provider-verifier --help && \
+		./pact/bin/pactflow help;; \
+	Linux) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
+		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
+		./pact/bin/pact-mock-service --help && \
+		./pact/bin/pact-provider-verifier --help && \
+		./pact/bin/pactflow help;; \
+	esac
 
 ## ======================
 ## Misc
