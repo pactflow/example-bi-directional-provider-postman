@@ -45,7 +45,7 @@ ci_docker:
 ci_ruby_standalone:
 	PACT_TOOL=ruby_standalone make ci
 
-test_and_publish_provider_contract:
+test_and_publish:
 	@if make test; then \
 		EXIT_CODE=0 make publish_provider_contract; \
 	else \
