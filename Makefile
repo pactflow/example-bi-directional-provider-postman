@@ -50,35 +50,29 @@ install-pact-ruby-standalone:
 	case "${detected_OS}" in \
 	Windows|MSYS) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
 		unzip pact-${PACT_CLI_STANDALONE_VERSION}-win32.zip && \
-		./pact/bin/pact-mock-service.bat --help start;; \
+		./pact/bin/pact-mock-service.bat --help && \
+		./pact/bin/pact-provider-verifier.bat --help && \
+		./pact/bin/pactflow help;; \
 	Darwin) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
 		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-osx.tar.gz && \
-		./pact/bin/pact-mock-service --help start && \
-		./pact/bin/pact-provider-verifier --help verify;; \
+		./pact/bin/pact-mock-service --help && \
+		./pact/bin/pact-provider-verifier --help && \
+		./pact/bin/pactflow help;; \
 	Linux) curl -LO https://github.com/pact-foundation/pact-ruby-standalone/releases/download/v${PACT_CLI_STANDALONE_VERSION}/pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
 		tar xzf pact-${PACT_CLI_STANDALONE_VERSION}-linux-x86_64.tar.gz && \
-		./pact/bin/pact-mock-service --help start && \
-		./pact/bin/pact-provider-verifier --help verify ;; \
+		./pact/bin/pact-mock-service --help && \
+		./pact/bin/pact-provider-verifier --help && \
+		./pact/bin/pactflow help;; \
 	esac
-
-
-
-
-
-
-
-
-
-
 
 ## ====================
 ## CI tasks
 ## ====================
 
 all: ci
-all_docker: PACT_TOOL=docker ci
-all_ruby_standalone: PACT_TOOL=ruby_standalone ci
-all_ruby_cli: PACT_TOOL=ruby_cli ci
+all_docker: ci_docker
+all_ruby_standalone: ci_ruby_standalone
+all_ruby_cli: ci_ruby_cli
 
 # Run the ci target from a developer machine with the environment variables
 # set as if it was on Github Actions.
@@ -111,7 +105,6 @@ publish_provider_contract: .env
       --verification-results ${REPORT_PATH} \
       --verification-results-content-type ${REPORT_FILE_CONTENT_TYPE}\
       --verifier ${VERIFIER_TOOL}
-
 
 ## =====================
 ## Deploy tasks
@@ -147,9 +140,6 @@ record_deployment: .env
 	--pacticipant ${PACTICIPANT} \
 	--version ${COMMIT} \
 	--environment production
-
-
-
 
 ## ====================
 ## Multi-platform detection and support
@@ -192,4 +182,3 @@ convert:
 	touch .env
 
 .PHONY: start stop test
-
