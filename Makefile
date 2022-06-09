@@ -7,8 +7,7 @@ PACT_CLI_STANDALONE_VERSION?=v1.89.00-saf
 ## Pactflow Provider Publishing
 ## ====================
 CI_COMMAND?=publish_provider_contract
-DOCKER_BASE_PATH=/app/
-PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:${DOCKER_BASE_PATH} -w ${DOCKER_BASE_PATH} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
+PACT_CLI_DOCKER_RUN_COMMAND?=docker run --rm -v /${PWD}:/${PWD} -w ${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli:${PACT_CLI_DOCKER_VERSION}
 PACT_BROKER_COMMAND=pact-broker
 PACTFLOW_CLI_COMMAND=pactflow
 PACT_TOOL?=docker
@@ -52,9 +51,7 @@ ifeq ($(PACT_TOOL),ruby_standalone)
 endif
 
 ifeq ($(PACT_TOOL),docker)
-# add docker base path
-	OAS_PATH:="${DOCKER_BASE_PATH}${OAS_PATH}"
-	REPORT_PATH:="${DOCKER_BASE_PATH}${REPORT_PATH}"
+# add docker run command path
 	PACT_BROKER_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACT_BROKER_COMMAND}
 	PACTFLOW_CLI_COMMAND:=${PACT_CLI_DOCKER_RUN_COMMAND} ${PACTFLOW_CLI_COMMAND}
 endif
