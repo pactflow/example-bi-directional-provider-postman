@@ -16,14 +16,14 @@ on:
       PACT_CLI_STANDALONE_VERSION:
         description: Tag from https://github.com/pact-foundation/pact-ruby-standalone/releases
         required: true
-        default: 1.88.90
+        default: 1.89.00-rc1
         type: string
 
 env:
   PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
   PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
-  GIT_COMMIT: ${{ github.sha }}
+  VERSION: ${{ github.sha }}
   GITHUB_REF: ${{ github.ref }}
   PACT_CLI_DOCKER_VERSION: ${{ github.event.inputs.PACT_CLI_DOCKER_VERSION }}
   PACT_CLI_VERSION: ${{ github.event.inputs.PACT_CLI_VERSION }}
@@ -35,12 +35,12 @@ jobs:
     name: 🏗️ setup
     runs-on: ubuntu-latest
     steps:
-      - run: echo "GIT_BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV 
+      - run: echo "BRANCH=${GITHUB_REF:11}" >> $GITHUB_ENV 
       - run: echo "PACT_CLI_VERSION=${PACT_CLI_VERSION:=latest}" >> $GITHUB_ENV 
       - run: echo "PACT_CLI_DOCKER_VERSION=${PACT_CLI_DOCKER_VERSION:=latest}" >> $GITHUB_ENV 
       - run: echo "PACT_CLI_STANDALONE_VERSION=${PACT_CLI_STANDALONE_VERSION:-${PACT_CLI_STANDALONE_VERSION_DEFAULT}}" >> $GITHUB_ENV 
     outputs:
-      GIT_BRANCH: ${{ env.GIT_BRANCH }}
+      BRANCH: ${{ env.BRANCH }}
       PACT_CLI_VERSION: ${{ env.PACT_CLI_VERSION }}
       PACT_CLI_DOCKER_VERSION: ${{ env.PACT_CLI_DOCKER_VERSION }}
       PACT_CLI_STANDALONE_VERSION: ${{ env.PACT_CLI_STANDALONE_VERSION }}
@@ -61,7 +61,7 @@ jobs:
       PACT_CLI_STANDALONE_VERSION: ${{ needs.setup.outputs.PACT_CLI_STANDALONE_VERSION}}
       PACT_TOOL: ${{ matrix.pact_tool }}
       PACTICIPANT: pactflow-example-bi-directional-provider-postman-${{ matrix.os }}-${{ matrix.pact_tool }}
-      GIT_BRANCH: ${{ needs.setup.outputs.GIT_BRANCH }}
+      BRANCH: ${{ needs.setup.outputs.BRANCH }}
     steps:
       - name: ⬇️ Checkout Repository
         uses: actions/checkout@v2
@@ -73,20 +73,15 @@ jobs:
           bundler: none
       # 1. we add a fallback for windows/darwin runners as they cannot run docker
       # 2. we fallback to the pact_broker-client, as the pact-ruby-standalone does not have the pactflow command
-      # we can remove the next two steps, and uncomment the 3 steps that are commented out
       - name: 🔧 install-pact-ruby-cli (also runs for macOS/docker) 
-        if: ${{ ((env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone') && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
+        if: ${{ (env.PACT_TOOL == 'ruby_cli' && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
         run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $GITHUB_ENV
       - name: 🔧 install-pact-ruby-cli on Windows (also runs for windows/docker) 
-        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone' || env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
+        if: ${{ (env.PACT_TOOL == 'ruby_cli'|| env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
         run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $env:GITHUB_ENV
-      # - if: ${{ (env.PACT_TOOL == 'ruby_cli' && runner.os != 'Windows') || (env.PACT_TOOL == 'docker' && runner.os == 'macOS') }}
-      #   run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $GITHUB_ENV
-      # - if: ${{ (env.PACT_TOOL == 'ruby_cli'|| env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
-      #   run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $env:GITHUB_ENV
-      # - name: 🔨install-pact-ruby-standalone
-      #   if: ${{ env.PACT_TOOL == 'ruby_standalone' }}
-      #   run: make install-pact-ruby-standalone
+      - name: 🔧 install-pact-ruby-standalone
+        if: ${{ env.PACT_TOOL == 'ruby_standalone' }}
+        run: make install-pact-ruby-standalone
       - name: 👷 Setup Node
         uses: actions/setup-node@v3
         with:
