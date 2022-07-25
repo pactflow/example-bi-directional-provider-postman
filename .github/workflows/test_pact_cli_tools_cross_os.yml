@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@v2
       - name: 🚨 Setup Ruby
         uses: ruby/setup-ruby@v1 
-        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'standalone') && runner.os == 'Linux' }}
+        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'standalone') && runner.os == 'Linux' || (env.PACT_TOOL == 'docker' && runner.os == 'Windows') }}
         with:
           ruby-version: 2.7
           bundler: none
