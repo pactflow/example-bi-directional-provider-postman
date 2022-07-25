@@ -130,14 +130,21 @@ If you don't have docker, you can use one of the ruby tools. The standalone, doe
 Using alternate pact CLI tools.
 
 - `PACT_TOOL=docker make ci` - run the CI process, using the pact Docker CLI tool
-- `PACT_TOOL=ruby_standalone make ci` - run the CI process, using the pact standalone CLI tool
+- `PACT_TOOL=standalone make ci` - run the CI process, using the pact standalone CLI tool
 - `PACT_TOOL=ruby_cli make ci` - run the CI process, using the pact ruby CLI tool
 
 ## OS/Platform specific considerations
 
-The makefile has been configured to run on Unix/Windows and MacOS based systems, and tested against Github Actions
+The makefile has been configured to run on Unix/Windows (with Bash) and MacOS based systems, and tested against Github Actions.
 
-They can be run locally on Unix/Windows and MacOS, or on Windows via [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) or a shell with bash.
+They can be run locally on Unix/Windows and MacOS.
+
+Tested on Windows via
+
+- [x] [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) with Ubuntu
+- [x] [Git Bash](https://gitforwindows.org/)
+- [ ] Command Prompt
+- [ ] Powershell
 
 ## Caveats
 

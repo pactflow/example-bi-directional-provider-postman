@@ -52,7 +52,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'windows-latest','macos-latest']
-        pact_tool: ['docker', 'ruby_cli', 'ruby_standalone' ]
+        pact_tool: ['docker', 'ruby_cli', 'standalone' ]
         node-version: [16.x]
     runs-on: ${{ matrix.os }}
     env:
@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@v2
       - name: 🚨 Setup Ruby
         uses: ruby/setup-ruby@v1 
-        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone') && runner.os == 'Linux' }}
+        if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'standalone') && runner.os == 'Linux' }}
         with:
           ruby-version: 2.7
           bundler: none
@@ -80,7 +80,7 @@ jobs:
         if: ${{ (env.PACT_TOOL == 'ruby_cli'|| env.PACT_TOOL == 'docker') && runner.os == 'Windows' }}
         run: make install-pact-ruby-cli && echo "PACT_TOOL=ruby_cli" >> $env:GITHUB_ENV
       - name: 🔧 install-pact-ruby-standalone
-        if: ${{ env.PACT_TOOL == 'ruby_standalone' }}
+        if: ${{ env.PACT_TOOL == 'standalone' }}
         run: make install-pact-ruby-standalone
       - name: 👷 Setup Node
         uses: actions/setup-node@v3
