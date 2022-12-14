@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0f3017a0-2bc8-4c96-a2e6-2f2a30cd6e95",
+		"_postman_id": "0ea45428-c342-470b-92f8-daf9265b60cf",
 		"name": "Example Products API (example based)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,6 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
+						"id": "1b56c141-b3f8-44a7-abab-be3c8f137bbb",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -18,8 +19,8 @@
 							"",
 							"pm.test(\"Matching body\", function () {",
 							"    const jsonData = pm.response.json();",
-							"    pm.expect(jsonData[0]).to.have.all.keys('id', 'type', 'name', 'price', 'version')",
-							"    pm.expect(jsonData).to.be.an(\"array\").and.to.deep.include({ \"id\": \"09\", \"type\": \"CREDIT_CARD\", \"name\": \"Gem Visa\", \"version\": \"v1\", \"price\": 99.99 })",
+							"    pm.expect(jsonData[0]).to.have.all.keys('id', 'type', 'price', 'version')",
+							"    pm.expect(jsonData).to.be.an(\"array\").and.to.deep.include({ \"id\": \"09\", \"type\": \"CREDIT_CARD\", \"version\": \"v1\", \"price\": 99.99 })",
 							"});",
 							"",
 							""
@@ -92,7 +93,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"id\": \"09\",\n        \"name\": \"Gem Visa\",\n        \"type\": \"CREDIT_CARD\",\n        \"price\": 99.99,\n        \"version\": \"v1\"\n    },\n    {\n        \"id\": \"10\",\n        \"name\": \"28 Degrees\",\n        \"type\": \"CREDIT_CARD\",\n        \"price\": 49.49,\n        \"version\": \"v1\"\n    },\n    {\n        \"id\": \"11\",\n        \"name\": \"MyFlexiPay\",\n        \"type\": \"PERSONAL_LOAN\",\n        \"price\": 16.5,\n        \"version\": \"v2\"\n    }\n]"
+					"body": "[\n    {\n        \"id\": \"09\",\n        \"type\": \"CREDIT_CARD\",\n        \"price\": 99.99,\n        \"version\": \"v1\"\n    },\n    {\n        \"id\": \"10\",\n        \"type\": \"CREDIT_CARD\",\n        \"price\": 49.49,\n        \"version\": \"v1\"\n    },\n    {\n        \"id\": \"11\",\n        \"type\": \"PERSONAL_LOAN\",\n        \"price\": 16.5,\n        \"version\": \"v2\"\n    }\n]"
 				}
 			]
 		},
@@ -102,6 +103,7 @@
 				{
 					"listen": "test",
 					"script": {
+						"id": "bd240483-3498-4820-8fe4-03ca77853ab4",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -109,8 +111,8 @@
 							"",
 							"pm.test(\"Matching body\", function () {",
 							"    const jsonData = pm.response.json();",
-							"    pm.expect(jsonData).to.have.all.keys('id', 'type', 'name', 'price', 'version')",
-							"    pm.expect(jsonData).to.deep.include({ \"id\": \"09\", \"type\": \"CREDIT_CARD\", \"name\": \"Gem Visa\", \"version\": \"v1\", \"price\": 99.99 })",
+							"    pm.expect(jsonData).to.have.all.keys('id', 'type', 'price', 'version')",
+							"    pm.expect(jsonData).to.deep.include({ \"id\": \"09\", \"type\": \"CREDIT_CARD\", \"version\": \"v1\", \"price\": 99.99 })",
 							"});",
 							"",
 							""
@@ -121,6 +123,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
+						"id": "0a091b1e-09b5-450c-8d9e-b20ec4c43cd5",
 						"exec": [
 							"pm.globals.set(\"id\", \"09\");"
 						],
@@ -144,58 +147,6 @@
 				"description": "Get single product"
 			},
 			"response": [
-				{
-					"name": "GET /products/:id",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/product/09",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"product",
-								"09"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "79"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 04 May 2021 10:22:58 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"id\": \"09\",\n    \"type\": \"CREDIT_CARD\",\n    \"name\": \"Gem Visa\",\n    \"version\": \"v1\",\n    \"price\": 99.99\n}"
-				},
 				{
 					"name": "GET /products/:id (404)",
 					"originalRequest": {
@@ -247,6 +198,58 @@
 					],
 					"cookie": [],
 					"body": "{}"
+				},
+				{
+					"name": "GET /products/:id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/product/09",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"product",
+								"09"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "79"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 May 2021 10:22:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"09\",\n    \"type\": \"CREDIT_CARD\",\n    \"version\": \"v1\",\n    \"price\": 99.99\n}"
 				}
 			]
 		},
@@ -262,7 +265,8 @@
 							"});",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"id": "795f1b63-aa6d-4b62-922e-d67cacb39288"
 					}
 				}
 			],
@@ -425,5 +429,6 @@
 				"type": "string"
 			}
 		]
-	}
+	},
+	"protocolProfileBehavior": {}
 }
