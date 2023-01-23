@@ -88,7 +88,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: 📦️ Install
         run: npm i
-      - name: 🧪 Test and Publish Provider Contract to Pactflow 📈
+      - name: 🧪 Test and Publish Provider Contract to PactFlow 📈
         run: make test_and_publish
       - name: 🛂 Can I deploy?
         run: make can_i_deploy

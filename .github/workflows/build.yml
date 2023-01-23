@@ -1,4 +1,4 @@
-name: Test & Upload to Pactflow
+name: Test & Upload to PactFlow
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
           node-version: 16
       - name: 📦️ Install
         run: npm i
-      - name: 🧪 Test and upload to Pactflow 📈
+      - name: 🧪 Test and upload to PactFlow 📈
         run: BRANCH=${GITHUB_REF:11} make test_and_publish
 
   # Runs on branches as well, so we know the status of our PRs
