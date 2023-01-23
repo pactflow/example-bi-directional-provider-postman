@@ -1,4 +1,4 @@
-name: Test Pactflow GitHub Actions
+name: Test PactFlow GitHub Actions
 
 on:
   workflow_dispatch:

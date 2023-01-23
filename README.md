@@ -27,13 +27,13 @@
 
 <!-- Provider Overview -->
 
-This is an example of a NodeJS "Product" API Provider that uses Postman, Pact, [Pactflow](https://pactflow.io) and GitHub Actions to generate and publish Pact provider contracts.
+This is an example of a NodeJS "Product" API Provider that uses Postman, Pact, [PactFlow](https://pactflow.io) and GitHub Actions to generate and publish Pact provider contracts.
 
-It performs pre-deployment cross-compatability checks to ensure that it is compatible with specified consumers using the Bi-Directional contract capability of Pactflow.
+It performs pre-deployment cross-compatability checks to ensure that it is compatible with specified consumers using the Bi-Directional contract capability of PactFlow.
 
 <!-- General -->
 
-See the full [Pactflow Bi-Directional Workshop](https://docs.pactflow.io/docs/workshops/bi-directional-contract-testing) for which this can be substituted in as the "provider".
+See the full [PactFlow Bi-Directional Workshop](https://docs.pactflow.io/docs/workshops/bi-directional-contract-testing) for which this can be substituted in as the "provider".
 
 ### Key points
 
@@ -44,7 +44,7 @@ It:
 - Uses Newman to test the API against the postman collection
 - Uses [Postman2OpenAPI](https://github.com/kevinswiber/postman2openapi) to convert a Postman collection to an OAS for use in the bi-directional contracts feature.
 
-What is uploaded to Pactflow is an OpenAPI specification that represents what you actually tested with Postman, to give us confidence it is compatible with a Pact consumer.
+What is uploaded to PactFlow is an OpenAPI specification that represents what you actually tested with Postman, to give us confidence it is compatible with a Pact consumer.
 
 ## Overview of Part of Bi-Directional Contract Testing Flow
 
@@ -52,7 +52,7 @@ What is uploaded to Pactflow is an OpenAPI specification that represents what yo
 
 In the following diagram, you can see how the provider testing process works.
 
-When we call "can-i-deploy" the cross-contract validation process kicks off on Pactflow, to ensure any consumer consumes a valid subset of the OAS for the provider.
+When we call "can-i-deploy" the cross-contract validation process kicks off on PactFlow, to ensure any consumer consumes a valid subset of the OAS for the provider.
 
 ![Provider Test](docs/provider-scope.png "Provider Test")
 
@@ -97,7 +97,7 @@ See [Environment variables](#environment-variables) on how to set these up
 
 To be able to run some of the commands locally, you will need to export the following environment variables into your shell:
 
-- `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token) for Pactflow
+- `PACT_BROKER_TOKEN`: a valid [API token](https://docs.pactflow.io/docs/getting-started/#configuring-your-api-token) for PactFlow
 - `PACT_BROKER_BASE_URL`: a fully qualified domain name with protocol to your pact broker e.g. https://testdemo.pactflow.io
 
 ## Usage
@@ -108,7 +108,7 @@ To be able to run some of the commands locally, you will need to export the foll
 
 Run each step separately
 
-- `make test_and_publish` - tests the provider and publishes provider contracts to Pactflow
+- `make test_and_publish` - tests the provider and publishes provider contracts to PactFlow
   - This will perform the following 2 calls
     - `make test`
     - `make publish_provider_contract`
