@@ -2,6 +2,7 @@ name: Test & Upload to PactFlow
 
 on:
   push:
+  workflow_dispatch:
 
 env:
   PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
