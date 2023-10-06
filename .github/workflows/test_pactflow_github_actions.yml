@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
 
 env:
-  PACT_BROKER_BASE_URL: https://testdemo.pactflow.io
+  PACT_BROKER_BASE_URL: https://nico.pactflow.io
   PACT_BROKER_TOKEN: ${{ secrets.PACTFLOW_TOKEN_FOR_CI_CD_WORKSHOP }}
   PACT_BROKER_PUBLISH_VERIFICATION_RESULTS: true
   VERSION: ${{ github.sha }}
   GITHUB_REF: ${{ github.ref }}
   PACTICIPANT: "pactflow-example-bi-directional-provider-postman-github-actions"
-  pact_broker: https://testdemo.pactflow.io
+  pact_broker: https://nico.pactflow.io
 
 jobs:
 
