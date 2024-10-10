@@ -1,0 +1,261 @@
+openapi: 3.0.0
+info:
+  title: Example Products API (example based)
+  version: 1.0.0
+servers:
+  - url: http://{{host}}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+paths:
+  /products:
+    get:
+      tags:
+        - General
+      summary: GET /products
+      description: Get all products
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '246'
+            ETag:
+              schema:
+                type: string
+                example: W/"f6-H4sUa2b5P0f86z9trNUSS1xGqeo"
+            Date:
+              schema:
+                type: string
+                example: Tue, 04 May 2021 10:30:59 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                - id: '09'
+                  name: Gem Visa
+                  type: CREDIT_CARD
+                  price: 99.99
+                  version: v1
+                - id: '10'
+                  name: 28 Degrees
+                  type: CREDIT_CARD
+                  price: 49.49
+                  version: v1
+                - id: '11'
+                  name: MyFlexiPay
+                  type: PERSONAL_LOAN
+                  price: 16.5
+                  version: v2
+    post:
+      tags:
+        - General
+      summary: POST /products/ (200)
+      description: Create a product
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+              example: >-
+                "{\n    \"id\": \"09\",\n    \"name\": \"Gem Visa\",\n   
+                \"type\": \"CREDIT_CARD\",\n    \"price\": 99.99,\n   
+                \"version\": \"v1\"\n}"
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '79'
+            ETag:
+              schema:
+                type: string
+                example: W/"4f-7upA8VUHobjcwMU2JZU+mGYVfEo"
+            Date:
+              schema:
+                type: string
+                example: Sun, 09 May 2021 12:29:53 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                id: '09'
+                name: Gem Visa
+                type: CREDIT_CARD
+                price: 99.99
+                version: v1
+        '400':
+          description: Bad Request
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '29'
+            ETag:
+              schema:
+                type: string
+                example: W/"1d-pnhbRSD4NZML3cnaJuyottC+RiE"
+            Date:
+              schema:
+                type: string
+                example: Sun, 09 May 2021 13:07:38 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: invalid product
+  /product/{id}:
+    get:
+      tags:
+        - General
+      summary: GET /products/:id
+      description: Get single product
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '79'
+            ETag:
+              schema:
+                type: string
+                example: W/"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE"
+            Date:
+              schema:
+                type: string
+                example: Tue, 04 May 2021 10:22:58 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                id: '09'
+                type: CREDIT_CARD
+                name: Gem Visa
+                version: v1
+                price: 99.99
+        '404':
+          description: Not Found
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '79'
+            ETag:
+              schema:
+                type: string
+                example: W/"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE"
+            Date:
+              schema:
+                type: string
+                example: Tue, 04 May 2021 10:22:58 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+          content:
+            application/json:
+              schema:
+                type: object
+              example: {}

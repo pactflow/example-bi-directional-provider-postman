@@ -6,7 +6,7 @@ BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
 ## ====================
 ## Demo Specific Example Variables
 ## ====================
-OAS_PATH=oas/swagger.json
+OAS_PATH=oas/swagger.yml
 REPORT_PATH?=$(shell ls newman/*)
 REPORT_FILE_CONTENT_TYPE?=text/plain
 VERIFIER_TOOL?=postman
@@ -60,7 +60,7 @@ publish_provider_contract: .env
       --provider ${PACTICIPANT} \
       --provider-app-version ${VERSION} \
       --branch ${BRANCH} \
-      --content-type application/json \
+      --content-type application/yaml \
       --verification-exit-code=${EXIT_CODE} \
       --verification-results ${REPORT_PATH} \
       --verification-results-content-type ${REPORT_FILE_CONTENT_TYPE}\

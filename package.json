@@ -8,7 +8,9 @@
     "pretest": "rimraf newman",
     "test:newman": "newman run -e ./test/localhost3001.postman_environment.json test/PactflowProductsAPI.postman_collection.json -r cli,json",
     "test": "concurrently -k -s \"first\" \"npm start\" \"sleep 3 && npm run test:newman\"",
-    "test:convert": "node test/transform.js",
+    "test:convert": "node test/transform-postman-to-openapi.js",
+    "test:convert:postman-to-openapi": "node test/transform-postman-to-openapi.js",
+    "test:convert:postman2openapi": "node test/transform-postman2openapi.js",
     "test:publish": "EXIT_CODE=0 make publish_provider_contract"
   },
   "dependencies": {
@@ -22,7 +24,8 @@
     "concurrently": "^9.0.1",
     "dotenv": "^16.4.5",
     "eslint": "^9.12.0",
-    "postman2openapi": "^1.2.1"
+    "postman2openapi": "^1.2.1",
+    "postman-to-openapi": "^3.0.1"
   },
   "license": "ISC"
 }

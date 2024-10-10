@@ -42,7 +42,7 @@ jobs:
         name: get dynamically named results file
       - uses: pactflow/actions/publish-provider-contract@v0.0.2
         env:
-          oas_file: oas/swagger.json
+          oas_file: oas/swagger.yml
           results_file: ${{ env.results_file }}
           pact_broker: ${{ env.PACT_BROKER_BASE_URL }}
           pact_broker_token: ${{ env.PACT_BROKER_TOKEN }}
