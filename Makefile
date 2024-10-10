@@ -15,7 +15,8 @@ VERIFIER_TOOL?=postman
 ## Build/test tasks
 ## =====================
 
-install: npm install 
+install: 
+	npm install 
 
 test: .env
 	@echo "\n========== STAGE: test ✅ ==========\n"
