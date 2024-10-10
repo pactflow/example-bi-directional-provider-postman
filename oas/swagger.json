@@ -1,0 +1,479 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Example Products API (example based)",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "servers": [
+    {
+      "url": "{{host}}"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "GET /products",
+        "description": "Get all products",
+        "operationId": "getProducts",
+        "responses": {
+          "200": {
+            "description": "GET /products",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "246"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 04 May 2021 10:30:59 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"f6-H4sUa2b5P0f86z9trNUSS1xGqeo\""
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "09"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Gem Visa"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 99.99
+                      },
+                      "type": {
+                        "type": "string",
+                        "example": "CREDIT_CARD"
+                      },
+                      "version": {
+                        "type": "string",
+                        "example": "v1"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "09",
+                      "name": "Gem Visa",
+                      "price": 99.99,
+                      "type": "CREDIT_CARD",
+                      "version": "v1"
+                    },
+                    {
+                      "id": "10",
+                      "name": "28 Degrees",
+                      "price": 49.49,
+                      "type": "CREDIT_CARD",
+                      "version": "v1"
+                    },
+                    {
+                      "id": "11",
+                      "name": "MyFlexiPay",
+                      "price": 16.5,
+                      "type": "PERSONAL_LOAN",
+                      "version": "v2"
+                    }
+                  ]
+                },
+                "examples": {
+                  "GET /products": {
+                    "value": [
+                      {
+                        "id": "09",
+                        "name": "Gem Visa",
+                        "price": 99.99,
+                        "type": "CREDIT_CARD",
+                        "version": "v1"
+                      },
+                      {
+                        "id": "10",
+                        "name": "28 Degrees",
+                        "price": 49.49,
+                        "type": "CREDIT_CARD",
+                        "version": "v1"
+                      },
+                      {
+                        "id": "11",
+                        "name": "MyFlexiPay",
+                        "price": 16.5,
+                        "type": "PERSONAL_LOAN",
+                        "version": "v2"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /products/ (200)",
+        "description": "Create a product",
+        "operationId": "postProducts200",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {
+                "POST /products/ (200)": {
+                  "value": {}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "POST /products/ (200)",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "79"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sun, 09 May 2021 12:29:53 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"4f-7upA8VUHobjcwMU2JZU+mGYVfEo\""
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "09"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Gem Visa"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 99.99
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "CREDIT_CARD"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "v1"
+                    }
+                  }
+                },
+                "examples": {
+                  "POST /products/ (200)": {
+                    "value": {
+                      "id": "09",
+                      "name": "Gem Visa",
+                      "price": 99.99,
+                      "type": "CREDIT_CARD",
+                      "version": "v1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /products/ (400)",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "29"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sun, 09 May 2021 13:07:38 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"1d-pnhbRSD4NZML3cnaJuyottC+RiE\""
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "invalid product"
+                    }
+                  }
+                },
+                "examples": {
+                  "POST /products/ (400)": {
+                    "value": {
+                      "message": "invalid product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "summary": "GET /products/:id",
+        "description": "Get single product",
+        "operationId": "getProductsId",
+        "responses": {
+          "200": {
+            "description": "GET /products/:id",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "79"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 04 May 2021 10:22:58 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "09"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Gem Visa"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 99.99
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "CREDIT_CARD"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "v1"
+                    }
+                  }
+                },
+                "examples": {
+                  "GET /products/:id": {
+                    "value": {
+                      "id": "09",
+                      "name": "Gem Visa",
+                      "price": 99.99,
+                      "type": "CREDIT_CARD",
+                      "version": "v1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "GET /products/:id (404)",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "string",
+                  "example": "79"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 04 May 2021 10:22:58 GMT"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"4f-aj8zSH7MB6cvQn56hAlIKZ+G1BE\""
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "GET /products/:id (404)": {
+                    "value": {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": []
+}
