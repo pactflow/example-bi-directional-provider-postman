@@ -40,7 +40,7 @@ jobs:
         run: make test
       - run: echo "results_file=$(ls newman/*)" >> $GITHUB_ENV 
         name: get dynamically named results file
-      - uses: pactflow/actions/publish-provider-contract@v0.0.2
+      - uses: pactflow/actions/publish-provider-contract@87b7d143d8339aa3b591a1bd1a08eaf4d9e207a3 # v0.0.6
         env:
           oas_file: oas/swagger.json
           results_file: ${{ env.results_file }}
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup,test]
     steps:
-      - uses: pactflow/actions/can-i-deploy@v0.0.2
+      - uses: pactflow/actions/can-i-deploy@87b7d143d8339aa3b591a1bd1a08eaf4d9e207a3 # v0.0.6
         env:
           to: "production"
           pact_broker: ${{ env.PACT_BROKER_BASE_URL }}
