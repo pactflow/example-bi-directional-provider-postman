@@ -21,7 +21,7 @@
     "axios": "1.11.0",
     "concurrently": "9.2.0",
     "dotenv": "17.2.1",
-    "eslint": "9.31.0",
+    "eslint": "9.32.0",
     "postman2openapi": "1.2.1"
   },
   "license": "ISC"
