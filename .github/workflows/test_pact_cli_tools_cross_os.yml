@@ -69,7 +69,7 @@ jobs:
         uses: ruby/setup-ruby@v1 
         if: ${{ (env.PACT_TOOL == 'ruby_cli' || env.PACT_TOOL == 'ruby_standalone') && runner.os == 'Linux' }}
         with:
-          ruby-version: 2.7
+          ruby-version: 2.7.8
           bundler: none
       # 1. we add a fallback for windows/darwin runners as they cannot run docker
       # 2. we fallback to the pact_broker-client, as the pact-ruby-standalone does not have the pactflow command
