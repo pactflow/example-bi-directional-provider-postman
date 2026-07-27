@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "axios": "1.18.1",
-    "concurrently": "10.0.3",
+    "concurrently": "10.0.4",
     "dotenv": "17.4.2",
     "eslint": "10.8.0",
     "postman2openapi": "1.2.1"
